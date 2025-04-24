@@ -1,0 +1,51 @@
+{layout layouts/main.latte}
+
+{block content}
+    <h1>Tableau de bord</h1>
+
+    <p>
+        Bienvenue, <strong>{$username|escape}</strong> !
+        <a href="{$basePath}/logout" class="btn btn-sm btn-outline-secondary">Se déconnecter</a>
+    </p>
+
+    <h2>Vos credentials</h2>
+    <a href="{$basePath}/credentials/create" class="btn btn-primary mb-3">+ Ajouter un credential</a>
+
+    {if empty($credentials)}
+        <p>Aucun credential trouvé.</p>
+    {else}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Login</th>
+                <th>URL</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach $credentials as $c}
+                <tr>
+                    <td>{$c->title|escape}</td>
+                    <td>{$c->login|escape}</td>
+                    <td>
+                        {if $c->url}
+                            <a href="{$c->url|escape}" target="_blank">{$c->url|escape}</a>
+                        {/if}
+                    </td>
+                    <td>
+                        <a href="{$basePath}/credentials/{$c->id}/edit" class="btn btn-sm btn-secondary">✏️</a>
+                        <form
+                                action="{$basePath}/credentials/{$c->id}/delete"
+                                method="post"
+                                style="display:inline"
+                        >
+                            <button type="submit" class="btn btn-sm btn-danger">🗑️</button>
+                        </form>
+                    </td>
+                </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    {/if}
+{/block}
