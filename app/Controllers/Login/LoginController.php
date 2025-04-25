@@ -20,12 +20,13 @@ class LoginController extends Controller
 
 
     #[Get("/login")]
-    public function loginPage(): Response
+    public function index(): Response
     {
         $form = $this->buildForm();
-        return $this->render("login", ['form' => $form]);
-
-
+        return $this->render("login", [
+            'form'  => $form,
+            'title' => 'Connexion'
+        ]);
     }
 
     #[Post("/login")]
@@ -37,7 +38,7 @@ class LoginController extends Controller
         $form->field('password', [Rule::required("Le mot de passe est requis")]);
 
         if (!$form->verify()) {
-            return $this->render("login", ['form' => $form]);
+            return $this->render("login", ['form' => $form,'title' => "Dashboard"]);
         }
 
         $data = $form->buildObject();

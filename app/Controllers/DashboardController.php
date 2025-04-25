@@ -28,6 +28,7 @@ class DashboardController extends Controller
         $username = $_SESSION['username'] ?? '';
 
         return $this->render("dashboard", [
+            'title' => "Dashboard",
             'credentials' => $credentials,
             'username'    => $username
         ]);

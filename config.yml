@@ -1,5 +1,5 @@
 application:
-  project: "Template"
+  project: "Sleuthel"
   env: "dev"
   contact_email: "info@ophelios.com"
   locales:
