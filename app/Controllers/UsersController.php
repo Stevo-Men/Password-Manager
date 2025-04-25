@@ -14,7 +14,6 @@ class UsersController extends Controller
 
     public function __construct()
     {
-        parent::__construct();
         $this->broker = new UserBroker();
     }
 

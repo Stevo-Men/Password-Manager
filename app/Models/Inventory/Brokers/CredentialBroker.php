@@ -3,6 +3,7 @@
 namespace Models\Inventory\Brokers;
 
 use Zephyrus\Database\DatabaseBroker;
+use stdClass;
 
 class CredentialBroker extends DatabaseBroker
 {
@@ -14,4 +15,26 @@ class CredentialBroker extends DatabaseBroker
             [$userId]
         );
     }
+
+    public function insert(stdClass $credential): int
+    {
+
+        $row = $this->query(
+            "INSERT INTO credentials 
+                (user_id, title, url, login, password_encrypted, notes, created_at, updated_at)
+             VALUES (?, ?, ?, ?, ?, ?, now(), now())
+             RETURNING id",
+            [
+                $credential->user_id,
+                $credential->title,
+                $credential->url,
+                $credential->login,
+                $credential->password_encrypted,
+                $credential->notes
+            ]
+        );
+        return (int) $row->id;
+    }
+
+
 }
