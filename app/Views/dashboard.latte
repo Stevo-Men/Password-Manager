@@ -1,12 +1,13 @@
 {layout layouts/main.latte}
 
 {block content}
+
+    {include layouts/components/header.latte}
     <h1>Tableau de bord</h1>
 
-    <p>
-        Bienvenue, <strong>{$username|escape}</strong> !
-        <a href="{$basePath}/logout" class="btn btn-sm btn-outline-secondary">Se déconnecter</a>
-    </p>
+
+
+
 
     <h2>Vos credentials</h2>
     <a href="{$basePath}/credentials/create" class="btn btn-primary mb-3">+ Ajouter un credential</a>

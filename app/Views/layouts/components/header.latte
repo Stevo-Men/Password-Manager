@@ -1,0 +1,15 @@
+{layout ../main.latte}
+
+{block content}
+    <div class="dashboard-header">
+        <div class="header-container">
+            <div class="welcome">
+                👋 Bienvenue, <strong>{$username|escape}</strong> !
+            </div>
+            <div class="header-actions">
+                <a href="{$basePath}/profile" class="btn btn-sm btn-profile">Profil</a>
+                <a href="{$basePath}/login"  class="btn btn-sm btn-logout">Se déconnecter</a>
+            </div>
+        </div>
+    </div>
+{/block}
