@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-use Models\Brokers\UserBroker;
+use Models\Inventory\Brokers\UserBroker;
 use Zephyrus\Application\Rule;
 use Zephyrus\Network\Router\Get;
 use Zephyrus\Network\Router\Post;

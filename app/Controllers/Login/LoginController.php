@@ -2,22 +2,20 @@
 
 namespace Controllers\Login;
 
+use Models\Inventory\Services\LoginService;
 use Zephyrus\Application\Controller;
-use Zephyrus\Application\Rule;
 use Zephyrus\Network\Router\Get;
 use Zephyrus\Network\Router\Post;
 use Zephyrus\Network\Response;
-use Models\Inventory\Brokers\UserBroker;
 
 class LoginController extends Controller
 {
-    private UserBroker $broker;
+    private LoginService $loginService;
 
     public function __construct()
     {
-        $this->broker = new UserBroker();
+        $this->loginService = new LoginService();
     }
-
 
     #[Get("/login")]
     public function index(): Response
@@ -34,23 +32,14 @@ class LoginController extends Controller
     {
         $form = $this->buildForm();
 
-        $form->field('username', [Rule::required("Le nom d'utilisateur est requis")]);
-        $form->field('password', [Rule::required("Le mot de passe est requis")]);
+        $data = $this->loginService->login($form);
 
-        if (!$form->verify()) {
-            return $this->render("login", ['form' => $form,'title' => "Dashboard"]);
-        }
+        $form = $data["form"];
+        $errors = $data["errors"];
 
-        $data = $form->buildObject();
-        $user = $this->broker->findByUsername($data->username);
-        if (!$user || !password_verify($data->password, $user->password_hash)) {
-            $form->addError('username', "Identifiants incorrects");
+        if ($errors) {
             return $this->render("login", ['form' => $form]);
         }
-
-        $_SESSION['user_id']  = $user->id;
-        $_SESSION['username'] = $user->username;
-
 
         return $this->redirect('/dashboard');
     }

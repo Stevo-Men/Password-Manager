@@ -40,6 +40,7 @@
                                 action="{$basePath}/credentials/{$c->id}/delete"
                                 method="post"
                                 style="display:inline"
+                                onsubmit="return confirm('Voulez-vous vraiment supprimer ce credential « {$c->title|escape} » ?');"
                         >
                             <button type="submit" class="btn btn-sm btn-danger">🗑️</button>
                         </form>

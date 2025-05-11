@@ -16,19 +16,19 @@
 
         <form action="{$basePath}/login" method="post" novalidate>
             <div class="mb-3">
-                <label for="username" class="form-label">Nom d'utilisateur</label>
+                <label for="email" class="form-label">Email</label>
                 <input
                         type="text"
-                        id="username"
-                        name="username"
-                        class="form-control {if isset($form->getErrors()['username'])}is-invalid{/if}"
-                        value="{$form->getValue('username')|escape}"
+                        id="email"
+                        name="email"
+                        class="form-control {if isset($form->getErrors()['email'])}is-invalid{/if}"
+                        value="{$form->getValue('email')|escape}"
                         required
                         autofocus
                 >
-                {if isset($form->getErrors()['username'])}
+                {if isset($form->getErrors()['email'])}
                     <div class="invalid-feedback">
-                        {$form->getErrors()['username'][0]|escape}
+                        {$form->getErrors()['email'][0]|escape}
                     </div>
                 {/if}
             </div>
