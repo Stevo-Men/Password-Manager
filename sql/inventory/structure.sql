@@ -4,9 +4,13 @@
 
 CREATE TABLE users (
                        id               SERIAL PRIMARY KEY,
-                       username         VARCHAR(100) NOT NULL UNIQUE,
-                       email            VARCHAR(255) NOT NULL UNIQUE,
-                       password_hash    VARCHAR(255) NOT NULL,
+                       firstname        TEXT NOT NULL,
+                       lastname         TEXT NOT NULL,
+                       username         TEXT NOT NULL UNIQUE,
+                       email            TEXT NOT NULL,
+                       salt             TEXT NOT NULL,
+                       password_hash    TEXT NOT NULL,
+                       email_hash       TEXT NOT NULL UNIQUE,
                        created_at       TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
                        updated_at       TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
                        last_login       TIMESTAMP WITHOUT TIME ZONE
@@ -15,9 +19,9 @@ CREATE TABLE users (
 
 CREATE TABLE credentials (
                              id                 SERIAL PRIMARY KEY,
-                             title              VARCHAR(150) NOT NULL,
+                             title              TEXT NOT NULL UNIQUE,
                              url                TEXT,
-                             login              VARCHAR(100),
+                             login         TEXT NOT NULL,
                              password_encrypted TEXT NOT NULL,
                              notes              TEXT,
                              created_at         TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
@@ -31,10 +35,10 @@ CREATE TABLE credentials (
 
 CREATE TABLE audit_logs (
                             id           SERIAL PRIMARY KEY,
-                            action       VARCHAR(100) NOT NULL,
-                            target_type  VARCHAR(50),
+                            action       TEXT NOT NULL,
+                            target_type  TEXT NOT NULL,
                             target_id    INTEGER,
-                            ip_address   VARCHAR(45),
+                            ip_address   TEXT NOT NULL,
                             created_at   TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
                             user_id      INTEGER REFERENCES users(id)
                                 ON DELETE SET NULL
