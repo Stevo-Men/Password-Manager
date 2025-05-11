@@ -16,6 +16,43 @@
 
         <form action="{$basePath}/register" method="post" novalidate>
 
+
+            <div class="mb-3">
+                <label for="firstname" class="form-label">Prénom</label>
+                <input
+                        type="text"
+                        id="firstname"
+                        name="firstname"
+                        class="form-control {if isset($form->getErrors()['firstname'])}is-invalid{/if}"
+                        value="{$form->getValue('firstname')|escape}"
+                        required
+                        autofocus
+                >
+                {if isset($form->getErrors()['firstname'])}
+                    <div class="invalid-feedback">
+                        {$form->getErrors()['firstname'][0]|escape}
+                    </div>
+                {/if}
+            </div>
+
+            <div class="mb-3">
+                <label for="lastname" class="form-label">Nom</label>
+                <input
+                        type="text"
+                        id="lastname"
+                        name="lastname"
+                        class="form-control {if isset($form->getErrors()['lastname'])}is-invalid{/if}"
+                        value="{$form->getValue('lastname')|escape}"
+                        required
+                        autofocus
+                >
+                {if isset($form->getErrors()['lastname'])}
+                    <div class="invalid-feedback">
+                        {$form->getErrors()['lastname'][0]|escape}
+                    </div>
+                {/if}
+            </div>
+
             <div class="mb-3">
                 <label for="username" class="form-label">Nom d'utilisateur</label>
                 <input
