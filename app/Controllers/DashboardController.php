@@ -3,8 +3,10 @@
 namespace Controllers;
 
 use Models\Inventory\Brokers\CredentialBroker;
+use Zephyrus\Core\Session;
 use Zephyrus\Network\Router\Get;
 use Zephyrus\Network\Response;
+use Zephyrus\Network\Router\Post;
 
 class DashboardController extends Controller
 {
@@ -18,7 +20,7 @@ class DashboardController extends Controller
     #[Get("/dashboard")]
     public function index(): Response
     {
-        $userId = $_SESSION['user_id'] ?? null;
+        $userId = Session::get('userId') ?? null;
         if (!$userId) {
             return $this->redirect('/login');
         }
@@ -32,5 +34,13 @@ class DashboardController extends Controller
             'credentials' => $credentials,
             'username'    => $username
         ]);
+    }
+
+    #[Get("/logout")]
+    public function logout(): Response
+    {
+        Session::destroy();
+
+        return $this->redirect('/login');
     }
 }
