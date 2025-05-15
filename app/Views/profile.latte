@@ -1,0 +1,36 @@
+{layout layouts/main.latte}
+
+
+{block content}
+    <section class="container mt-5" style="max-width: 600px;">
+        <h1 class="mb-4 text-center">Mon profil</h1>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Prénom</dt>
+                    <dd class="col-sm-8">{$user->firstname|escape}</dd>
+
+                    <dt class="col-sm-4">Nom</dt>
+                    <dd class="col-sm-8">{$user->lastname|escape}</dd>
+
+                    <dt class="col-sm-4">Nom d’utilisateur</dt>
+                    <dd class="col-sm-8">{$user->username|escape}</dd>
+
+                    <dt class="col-sm-4">E-mail</dt>
+                    <dd class="col-sm-8">{$user->email|escape}</dd>
+
+                    <dt class="col-sm-4">Inscrit le</dt>
+                    <dd class="col-sm-8">{$user->created_at|date:'d MMMM yyyy à HH:mm'}</dd>
+
+                    {if $user->last_login}
+                        <dt class="col-sm-4">Dernière connexion</dt>
+                        <dd class="col-sm-8">{$user->last_login|date:'d MMMM yyyy à HH:mm'}</dd>
+                    {/if}
+                </dl>
+            </div>
+            <div class="card-footer text-end">
+                <a href="{$basePath}/profile/updateInfo" class="btn btn-primary">Modifier mon profil</a>
+            </div>
+        </div>
+    </section>
+{/block}
