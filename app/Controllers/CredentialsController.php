@@ -26,7 +26,7 @@ class CredentialsController extends Controller
         $form = $this->buildForm();
         return $this->render("credentials/form", [
             'form'  => $form,
-            'title' => 'Ajouter un credential'
+            'title' => 'Ajout d\'identification'
         ]);
     }
 
@@ -44,7 +44,7 @@ class CredentialsController extends Controller
         if (!$form->verify()) {
             return $this->render("credentials/form", [
                 'form'  => $form,
-                'title' => 'Ajouter un credential'
+                'title' => 'Ajout d\'identification'
             ]);
         }
 
@@ -62,6 +62,17 @@ class CredentialsController extends Controller
         ]);
 
         Flash::success("Credential « {$data->title} » ajouté avec succès !");
+        return $this->redirect('/dashboard');
+    }
+
+    #[Post("/credentials/{id}/delete")]
+    public function delete(int $id): Response
+    {
+        if ($this->broker->delete($id)) {
+            Flash::success("Credential supprimé avec succès.");
+        } else {
+            Flash::error("Erreur lors de la suppression.");
+        }
         return $this->redirect('/dashboard');
     }
 }

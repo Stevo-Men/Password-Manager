@@ -7,12 +7,12 @@ use Models\Core\Entity;
 class Credential extends Entity
 {
     public int $id;
-    public int $userId;
+    public int $user_id;
     public string $title;
     public string $url;
     public string $login;
-    public string $passwordEncrypted;
+    public string $password_encrypted;
     public string $notes;
 
-    public string $lastLogin;
+    public string $last_login;
 }

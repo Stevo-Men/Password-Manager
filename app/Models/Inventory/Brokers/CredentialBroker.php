@@ -36,5 +36,14 @@ class CredentialBroker extends DatabaseBroker
         return (int) $row->id;
     }
 
+    public function delete(int $id): bool
+    {
+        $this->query(
+            "DELETE FROM credentials WHERE id = ?",
+            [$id]
+        );
+        return $this->getLastAffectedCount() > 0;
+    }
+
 
 }
