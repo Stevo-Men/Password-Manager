@@ -3,7 +3,7 @@
 namespace Models\Inventory\Validators;
 
 use Models\Exceptions\FormException;
-use Models\Inventory\Services\Encyryption\EncyrptionService;
+use Models\Inventory\Services\Cryptography\CryptographyService;
 use Zephyrus\Application\Form;
 use Zephyrus\Application\Rule;
 
@@ -40,7 +40,7 @@ class RegisterValidator
         $password = $form->getValue("password");
         $password_confirm = $form->getValue("password_confirm");
         $email = $form->getValue("email");
-        $emailHash = (new EncyrptionService)->simpleHash($email);
+        $emailHash = (new CryptographyService)->simpleHash($email);
         $username = $form->getValue("username");
 
         if ($password !== $password_confirm) {

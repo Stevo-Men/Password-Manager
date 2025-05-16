@@ -3,7 +3,7 @@
 namespace Models\Inventory\Services;
 
 use Models\Inventory\Entities\User;
-use Models\Inventory\Services\Encyryption\EncyrptionService;
+use Models\Inventory\Services\Cryptography\CryptographyService;
 use Models\Inventory\Validators\RegisterValidator;
 use Models\Inventory\Brokers\UserBroker;
 use Zephyrus\Application\Form;
@@ -13,13 +13,13 @@ use Zephyrus\Network\Router\Post;
 class RegisterService
 {
     private UserBroker $broker;
-    private EncyrptionService $encrypt;
+    private CryptographyService $encrypt;
     private RegisterValidator $validator;
 
     public function __construct()
     {
         $this->broker = new UserBroker();
-        $this->encrypt = new EncyrptionService();
+        $this->encrypt = new CryptographyService();
         $this->validator = new RegisterValidator();
     }
 
@@ -47,8 +47,8 @@ class RegisterService
             $hash = Cryptography::hashPassword($password);
 
             $user = new User();
-            $user->firstName = $this->encrypt->encrypt($firstname, $userKey);
-            $user->lastName = $this->encrypt->encrypt($lastname, $userKey);
+            $user->firstname = $this->encrypt->encrypt($firstname, $userKey);
+            $user->lastname = $this->encrypt->encrypt($lastname, $userKey);
             $user->username = $this->encrypt->encrypt($username, $userKey);
             $user->email = $this->encrypt->encrypt($email, $userKey);
             $user->password_hash = $hash;
@@ -57,7 +57,7 @@ class RegisterService
             $newUserId = $this->broker->insert($user);
 
 
-            EncyrptionService::setUserContext($newUserId, $userKey);
+            CryptographyService::setUserContext($newUserId, $userKey);
 
             return [
                 'form' => $form
