@@ -2,9 +2,10 @@
 
 namespace Controllers\Profile;
 
-
 use Controllers\Controller;
 use Models\Inventory\Services\ProfileService;
+use Zephyrus\Application\Flash;
+use Zephyrus\Core\Session;
 use Zephyrus\Network\Response;
 use Zephyrus\Network\Router\Get;
 use Zephyrus\Network\Router\Post;
@@ -13,26 +14,26 @@ use Zephyrus\Network\Router\Post;
 
 class ProfileController extends Controller
 {
-    private ProfileService $profileService;
+    private ProfileService $service;
+
 
     public function __construct()
     {
-        $this->profileService = new ProfileService();
-        $this->broker = new UserBroker();
+        $this->service = new ProfileService();
     }
-
-
 
     #[Get("/profile")]
     public function index(): Response
     {
-        $userId = $this->getSession('user_id');
+        $userId = Session::get('userId') ?? null;
+
         if (!$userId) {
             return $this->redirect('/login');
         }
 
-        $user = $this->broker->findById($userId);
-        if (!$user) {
+        try {
+            $user = $this->service->getProfile($userId);
+        } catch (\InvalidArgumentException $e) {
             return $this->redirect('/login');
         }
 
@@ -43,12 +44,47 @@ class ProfileController extends Controller
     }
 
 
-    #[Post("/profile/edit")]
-    public function updateInfo(): Response
+    #[Get("/profile/edit")]
+    public function edit(): Response
     {
-        $form = $this->buildForm();
-        return $this->render("profile", ['form' => $form]);
+        $userId = Session::get('userId') ?? null;
+        if (!$userId) {
+            return $this->redirect('/login');
+        }
 
+        // Récupère l’entité décryptée
+        $user = $this->service->getProfile($userId);
+
+        return $this->render("profile/edit", [
+            'user'  => $user,
+            'title' => 'Modifier mon profil'
+        ]);
+    }
+
+    #[Post("/profile/edit")]
+    public function update(): Response
+    {
+        $userId = Session::get('userId') ?? null;
+        if (!$userId) {
+            return $this->redirect('/login');
+        }
+        $newUsername = (string) ($_POST['username'] ?? '');
+        try {
+            $this->service->updateUsername($userId, $newUsername);
+            // Mettre à jour la session pour le username affiché
+            $_SESSION['username'] = $newUsername;
+            Flash::success("Nom d’utilisateur mis à jour.");
+            return $this->redirect('/profile');
+        } catch (\Exception $e) {
+            Flash::error($e->getMessage());
+            // Recharger le form avec l’erreur
+            $user = $this->service->getProfile($userId);
+            return $this->render("profile/edit", [
+                'user'   => $user,
+                'title'  => 'Modifier mon profil',
+                'errors' => [$e->getMessage()]
+            ]);
+        }
     }
 
 

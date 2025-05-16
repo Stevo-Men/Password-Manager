@@ -1,18 +1,18 @@
 <?php
 
-namespace Models\Inventory\Services\Encyryption;
+namespace Models\Inventory\Services\Cryptography;
 
 use Zephyrus\Security\Cryptography;
 use Zephyrus\Core\Session;
 
-class EncyrptionService
+class CryptographyService
 {
     public function encrypt(string $text, string $key): string
     {
         return Cryptography::encrypt($text, $key);
     }
 
-    public function decrypt(string $ciphertext, string $key): string
+    public static function decrypt(string $ciphertext, string $key): string
     {
         return Cryptography::decrypt($ciphertext, $key);
     }
@@ -33,6 +33,13 @@ class EncyrptionService
         Session::set('userKey', $key);
     }
 
+
+    public static function getUserId(){
+        return Session::get('userId');
+    }
+    public static function getAesKey(){
+        return Session::get('userKey');
+    }
     public function simpleHash(string $text): string
     {
         return Cryptography::hash($text, 'sha256');

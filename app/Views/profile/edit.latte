@@ -1,0 +1,32 @@
+{layout ../layouts/main.latte}
+
+{block title}Modifier mon profil | {$project_name}{/block}
+
+{block content}
+    <section class="container mt-5" style="max-width:500px;">
+        <h1 class="mb-4 text-center">Modifier mon nom d’utilisateur</h1>
+
+        {if isset($errors)}
+            <div class="alert alert-danger">
+                {foreach $errors as $err}
+                    <p>{$err|escape}</p>
+                {/foreach}
+            </div>
+        {/if}
+
+        <form action="{$basePath}/profile/edit" method="post" novalidate>
+            <div class="mb-3">
+                <label for="username" class="form-label">Nom d’utilisateur</label>
+                <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        class="form-control"
+                        value="{$user->username|escape}"
+                        required
+                >
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Enregistrer</button>
+        </form>
+    </section>
+{/block}

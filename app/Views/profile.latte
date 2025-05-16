@@ -1,4 +1,5 @@
 {layout layouts/main.latte}
+{include profile/edit.latte}
 
 
 {block content}
@@ -20,16 +21,18 @@
                     <dd class="col-sm-8">{$user->email|escape}</dd>
 
                     <dt class="col-sm-4">Inscrit le</dt>
-                    <dd class="col-sm-8">{$user->created_at|date:'d MMMM yyyy à HH:mm'}</dd>
+                    <dd class="col-sm-8">{$user->created_at|date:'d M Y à H:m'}</dd>
 
                     {if $user->last_login}
                         <dt class="col-sm-4">Dernière connexion</dt>
-                        <dd class="col-sm-8">{$user->last_login|date:'d MMMM yyyy à HH:mm'}</dd>
+                        <dd class="col-sm-8">{$user->last_login|date:'yyyy MMMM d à HH:mm'}</dd>
                     {/if}
                 </dl>
             </div>
             <div class="card-footer text-end">
-                <a href="{$basePath}/profile/updateInfo" class="btn btn-primary">Modifier mon profil</a>
+                <a href="{$basePath}/profile/edit" class="btn btn-primary">
+                    Modifier mon profil
+                </a>
             </div>
         </div>
     </section>
