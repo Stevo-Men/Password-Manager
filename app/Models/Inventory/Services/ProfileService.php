@@ -68,8 +68,18 @@ class ProfileService
     public function changePassword($form,int $userId, string $newPassword): array
     {
         try {
-        $this->validator->assert($form,$this->broker);
-        $user = $this->broker->findUserById($userId);
+            $user = $this->broker->findUserById($userId);
+
+            if (!Cryptography::verifyHashedPassword($form->getValue('old_password'), $user->password_hash)) {
+                $form->addError('old_password', "Mot de passe actuel incorrect.");
+                return [
+                    'form' => $form,
+                    'errors' => $form->getErrorMessages()
+                ];
+            }
+
+        $this->validator->assert($form);
+
 
 
         $oldKey = $this->cryptoService->getAesKey();
@@ -96,8 +106,11 @@ class ProfileService
         $user->salt = $newSalt;
 
 
-        $this->broker->updateEncryptedProfile($user);
-        CryptographyService::setUserContext($userId, $newKey);
+        if ($this->broker->updateEncryptedProfile($user, $userId)){
+            Flash::success("Nom d’utilisateur mis à jour.");
+            CryptographyService::setUserContext($userId, $newKey);
+        };
+
 
 
 

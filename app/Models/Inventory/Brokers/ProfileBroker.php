@@ -48,7 +48,7 @@ class ProfileBroker extends DataBaseBroker
         return $this->getLastAffectedCount() > 0;
     }
 
-    public function updateEncryptedProfile(User $user): bool
+    public function updateEncryptedProfile(User $user, int $userId): bool
     {
         $this->selectSingle(
             "UPDATE users SET
@@ -66,7 +66,8 @@ class ProfileBroker extends DataBaseBroker
                 $user->username,
                 $user->email,
                 $user->password_hash,
-                $user->salt
+                $user->salt,
+                $userId
             ]
         );
         return $this->getLastAffectedCount() > 0;

@@ -19,7 +19,6 @@ class ProfileValidator
 
     public static function validateUsername(Form $form): void
     {
-
         $form->field("username", [
             Rule::required("Le nom d'utilisateur est obligatoire"),
             Rule::minLength(4,"Longueur minimale de 4 caractères")
@@ -34,7 +33,9 @@ class ProfileValidator
 
 
 
-    public static function assert(Form $form, $broker): void
+
+
+    public static function assert(Form $form): void
     {
         $form->field("old_password", [
             Rule::required("L’ancien mot de passe est requis")
@@ -49,12 +50,11 @@ class ProfileValidator
             Rule::required("La confirmation est requise")
         ]);
 
+        $form->field("new_password", [
+            Rule::sameAs("confirm_password","Les mots de passes ne correspondent pas")
+        ]);
 
 
-
-//        if ($form->getValue('new_password') !== $form->getValue('password_confirm')) {
-//            $form->addError('password_confirm', "Les deux mots de passe ne correspondent pas");
-//        }
 
         if (!$form->verify()) {
             throw new FormException($form);
