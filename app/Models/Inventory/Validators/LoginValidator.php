@@ -11,10 +11,10 @@ class LoginValidator
     public static function assert(Form $form): void
     {
         $form->field("email", [
-            Rule::required("Le email est obligatoire")
+            Rule::required("Le courriel est obligatoire")
         ]);
         $form->field("password", [
-            Rule::required("Le password est obligatoire"),
+            Rule::required("Le mot de passe est obligatoire"),
             Rule::minLength(4,"Longueur minimale de 4 caractères")
         ]);
 
