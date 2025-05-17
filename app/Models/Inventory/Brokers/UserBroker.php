@@ -53,7 +53,7 @@ class UserBroker extends DatabaseBroker
     {
         $data = $this->selectSingle(
             "INSERT INTO users (username, firstname, lastname, email, password_hash, email_hash, salt) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id",
-            [$user->username, $user->firstName, $user->lastName, $user->email, $user->password_hash, $user->email_hash, $user->salt]
+            [$user->username, $user->firstname, $user->lastname, $user->email, $user->password_hash, $user->email_hash, $user->salt]
         );
 
         if (!$data) {
