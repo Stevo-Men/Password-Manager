@@ -6,10 +6,12 @@
     <section class="container mt-5" style="max-width:500px;">
         <h1 class="mb-4 text-center">Modifier mon nom d’utilisateur</h1>
 
-        {if isset($errors)}
+        {if !empty($form->getErrors())}
             <div class="alert alert-danger">
-                {foreach $errors as $err}
-                    <p>{$err|escape}</p>
+                {foreach $form->getErrors() as $field => $messages}
+                    {foreach $messages as $error}
+                        <p>{$error|escape}</p>
+                    {/foreach}
                 {/foreach}
             </div>
         {/if}

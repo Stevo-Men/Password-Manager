@@ -52,11 +52,12 @@ class ProfileController extends Controller
             return $this->redirect('/login');
         }
 
-        // Récupère l’entité décryptée
+        $form = $this->buildForm();
         $user = $this->service->getProfile($userId);
 
         return $this->render("profile/edit", [
             'user'  => $user,
+            'form'  => $form,
             'title' => 'Modifier mon profil'
         ]);
     }
@@ -71,13 +72,12 @@ class ProfileController extends Controller
         $newUsername = (string) ($_POST['username'] ?? '');
         try {
             $this->service->updateUsername($userId, $newUsername);
-            // Mettre à jour la session pour le username affiché
+
             $_SESSION['username'] = $newUsername;
             Flash::success("Nom d’utilisateur mis à jour.");
             return $this->redirect('/profile');
         } catch (\Exception $e) {
             Flash::error($e->getMessage());
-            // Recharger le form avec l’erreur
             $user = $this->service->getProfile($userId);
             return $this->render("profile/edit", [
                 'user'   => $user,
@@ -85,6 +85,46 @@ class ProfileController extends Controller
                 'errors' => [$e->getMessage()]
             ]);
         }
+    }
+
+    #[Get("/profile/change-password")]
+    public function editPassword(): Response
+    {
+
+        $form = $this->buildForm();
+        return $this->render("profile/change-password", [
+            'form'  => $form,
+            'title' => 'Changer mon mot de passe'
+        ]);
+    }
+
+
+    #[Post("/profile/change-password")]
+    public function updatePassword(): Response
+    {
+        $form = $this->buildForm();
+        $userId = Session::get('userId') ?? null;
+        if (!$userId) {
+            return $this->redirect('/login');
+        }
+
+
+        $oldPwd  = $form->getValue('old_password');
+        $newPwd  = $form->getValue('new_password');
+        $confirm = $form->getValue('confirm_password');
+
+        $data = $this->service->changePassword($form,$userId, $oldPwd, $newPwd, $confirm);
+
+        $form = $data["form"];
+        $errors = $data["errors"];
+
+
+        if ($errors) {
+            return $this->render("profile/change-password", ['form' => $form, 'errors' => $errors]);
+        }
+
+            return $this->redirect('/profile');
+
     }
 
 

@@ -3,6 +3,7 @@
 
 
 {block content}
+    {include layouts/components/header.latte}
     <section class="container mt-5" style="max-width: 600px;">
         <h1 class="mb-4 text-center">Mon profil</h1>
         <div class="card shadow-sm">
@@ -31,7 +32,12 @@
             </div>
             <div class="card-footer text-end">
                 <a href="{$basePath}/profile/edit" class="btn btn-primary">
-                    Modifier mon profil
+                    Modifier le username
+                </a>
+            </div>
+            <div class="card-footer text-end">
+                <a href="{$basePath}/profile/change-password" class="btn btn-primary">
+                    Modifier le mot le passe
                 </a>
             </div>
         </div>

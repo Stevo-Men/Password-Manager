@@ -6,17 +6,19 @@ use Models\Inventory\Brokers\ProfileBroker;
 use Models\Inventory\Entities\User;
 use Models\Inventory\Services\Cryptography\CryptographyService;
 use Models\Inventory\Validators\ProfileValidator;
-use Zephyrus\Core\Session;
+use Zephyrus\Security\Cryptography;
 
 class ProfileService
 {
     private ProfileBroker $broker;
     private CryptographyService $cryptoService;
+    private ProfileValidator $validator;
 
     public function __construct()
     {
         $this->broker = new ProfileBroker();
         $this->cryptoService = new CryptographyService();
+        $this->validator = new ProfileValidator();
     }
 
     public function getProfile(int $userId): User
@@ -48,6 +50,55 @@ class ProfileService
 
         if (!$this->broker->updateUsername($userId, $encrypted)) {
             throw new \RuntimeException("Impossible de mettre à jour le nom d’utilisateur.");
+        }
+    }
+
+
+    public function changePassword($form,int $userId, string $oldPassword, string $newPassword, string $confirmPassword): array
+    {
+        try {
+        $this->validator->assert($form,$this->broker);
+        $user = $this->broker->findUserById($userId);
+
+
+        $oldKey = $this->cryptoService->getAesKey();
+        $plaintext = [
+            'firstname' => $this->cryptoService->decrypt($user->firstname, $oldKey),
+            'lastname'  => $this->cryptoService->decrypt($user->lastname,  $oldKey),
+            'username'  => $this->cryptoService->decrypt($user->username,  $oldKey),
+            'email'     => $this->cryptoService->decrypt($user->email,     $oldKey)
+        ];
+
+
+        $newSalt = $this->cryptoService->generateSalt();
+        $newKey  = $this->cryptoService->createUserKey($newPassword, $newSalt);
+        $newHash = Cryptography::hashPassword($newPassword);
+
+
+        $user->firstname = $this->cryptoService->encrypt($plaintext['firstname'], $newKey);
+        $user->lastname = $this->cryptoService->encrypt($plaintext['lastname'], $newKey);
+        $user->username = $this->cryptoService->encrypt($plaintext['username'], $newKey);
+        $user->email = $this->cryptoService->encrypt($plaintext['email'], $newKey);
+        $user->password_hash = $newHash;
+        $user->salt = $newSalt;
+        $user->email_hash = $this->cryptoService->simpleHash($user->email);
+        $user->salt = $newSalt;
+
+
+        $this->broker->updateEncryptedProfile($user);
+        CryptographyService::setUserContext($userId, $newKey);
+
+
+
+            return [
+
+                'form' => $form
+            ];
+        } catch (\Exception) {
+            return [
+                'form' => $form,
+                'errors' => $form->getErrors()
+            ];
         }
     }
 }

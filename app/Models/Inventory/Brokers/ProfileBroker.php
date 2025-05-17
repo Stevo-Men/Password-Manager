@@ -12,7 +12,7 @@ class ProfileBroker extends DataBaseBroker
     public function findUserById(int $id): ?User
     {
         $data = $this->selectSingle(
-            "SELECT firstname, lastname, username, email, created_at, updated_at, last_login FROM users WHERE id = ?",
+            "SELECT firstname, lastname, username, email, password_hash, created_at, updated_at, last_login FROM users WHERE id = ?",
             [$id]
         );
 
@@ -44,6 +44,30 @@ class ProfileBroker extends DataBaseBroker
         $this->selectSingle(
             "UPDATE users SET username = ?, updated_at = now() WHERE id = ?",
             [$encryptedUsername, $id]
+        );
+        return $this->getLastAffectedCount() > 0;
+    }
+
+    public function updateEncryptedProfile(User $user): bool
+    {
+        $this->selectSingle(
+            "UPDATE users SET
+                firstname = ?,
+                lastname = ?,
+                username = ?,
+                email = ?,
+                password_hash = ?,
+                salt = ?,
+                updated_at = now()
+             WHERE id = ?",
+            [
+                $user->firstname,
+                $user->lastname,
+                $user->username,
+                $user->email,
+                $user->password_hash,
+                $user->salt
+            ]
         );
         return $this->getLastAffectedCount() > 0;
     }
