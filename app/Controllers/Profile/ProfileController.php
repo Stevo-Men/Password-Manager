@@ -69,22 +69,26 @@ class ProfileController extends Controller
         if (!$userId) {
             return $this->redirect('/login');
         }
-        $newUsername = (string) ($_POST['username'] ?? '');
-        try {
-            $this->service->updateUsername($userId, $newUsername);
+        $form = $this->buildForm();
+        $newUsername = $form->getValue('username');
 
-            $_SESSION['username'] = $newUsername;
-            Flash::success("Nom d’utilisateur mis à jour.");
-            return $this->redirect('/profile');
-        } catch (\Exception $e) {
-            Flash::error($e->getMessage());
+
+        $data = $this->service->updateUsername($userId, $form);
+
+
+        $form = $data["form"];
+        $errors = $data["errors"];
             $user = $this->service->getProfile($userId);
-            return $this->render("profile/edit", [
-                'user'   => $user,
-                'title'  => 'Modifier mon profil',
-                'errors' => [$e->getMessage()]
-            ]);
-        }
+            if ($errors) {
+                return $this->render("profile/edit", [
+                    'user'   => $user,
+                    'title'  => 'Modifier mon profil',
+                    'form'   => $form,
+                    'errors' => 'errors'
+                ]);
+            }
+
+        return $this->redirect('/profile');
     }
 
     #[Get("/profile/change-password")]
@@ -109,11 +113,10 @@ class ProfileController extends Controller
         }
 
 
-        $oldPwd  = $form->getValue('old_password');
-        $newPwd  = $form->getValue('new_password');
-        $confirm = $form->getValue('confirm_password');
+        $newPassword  = $form->getValue('new_password');
 
-        $data = $this->service->changePassword($form,$userId, $oldPwd, $newPwd, $confirm);
+
+        $data = $this->service->changePassword($form,$userId, $newPassword);
 
         $form = $data["form"];
         $errors = $data["errors"];

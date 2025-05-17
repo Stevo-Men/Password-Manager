@@ -6,6 +6,7 @@ use Models\Inventory\Brokers\ProfileBroker;
 use Models\Inventory\Entities\User;
 use Models\Inventory\Services\Cryptography\CryptographyService;
 use Models\Inventory\Validators\ProfileValidator;
+use Zephyrus\Application\Flash;
 use Zephyrus\Security\Cryptography;
 
 class ProfileService
@@ -25,7 +26,7 @@ class ProfileService
     {
 
         $user = $this->broker->findUserById($userId);
-        ProfileValidator::ensureUserExists($user);
+        $this->validator->ensureUserExists($user);
 
         $userKey = $this->cryptoService->getAesKey();
         if (!$userKey) {
@@ -37,24 +38,34 @@ class ProfileService
         return $user;
     }
 
-    public function updateUsername(int $userId, string $newUsername): void
+    public function updateUsername(int $userId,$form): array
     {
-        ProfileValidator::validateUsername($newUsername);
+        try {
+            ProfileValidator::validateUsername($form);
 
-        $userKey = $this->cryptoService->getAesKey();
-        if (!$userKey) {
-            throw new \RuntimeException("Clé de chiffrement manquante en session.");
-        }
+            $userKey = $this->cryptoService->getAesKey();
 
-        $encrypted = $this->cryptoService->encrypt($newUsername, $userKey);
+            $encrypted = $this->cryptoService->encrypt($form->getValue('username'), $userKey);
 
-        if (!$this->broker->updateUsername($userId, $encrypted)) {
-            throw new \RuntimeException("Impossible de mettre à jour le nom d’utilisateur.");
+            if (!$this->broker->updateUsername($userId, $encrypted)) {
+                throw new \RuntimeException("Impossible de mettre à jour le nom d’utilisateur.");
+            }
+
+            $_SESSION['username'] = $form->getValue('username');
+            Flash::success("Nom d’utilisateur mis à jour.");
+            return [
+                'form' => $form
+            ];
+        } catch (\Exception) {
+            return [
+                'form' => $form,
+                'errors' => $form->getErrors()
+            ];
         }
     }
 
 
-    public function changePassword($form,int $userId, string $oldPassword, string $newPassword, string $confirmPassword): array
+    public function changePassword($form,int $userId, string $newPassword): array
     {
         try {
         $this->validator->assert($form,$this->broker);
@@ -91,7 +102,6 @@ class ProfileService
 
 
             return [
-
                 'form' => $form
             ];
         } catch (\Exception) {

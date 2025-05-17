@@ -17,15 +17,18 @@ class ProfileValidator
         }
     }
 
-    public static function validateUsername(string $username): void
+    public static function validateUsername(Form $form): void
     {
-        $username = trim($username);
-        if ($username === '') {
-            throw new InvalidArgumentException("Le nom d’utilisateur ne peut pas être vide.");
+
+        $form->field("username", [
+            Rule::required("Le nom d'utilisateur est obligatoire"),
+            Rule::minLength(4,"Longueur minimale de 4 caractères")
+        ]);
+
+        if (!$form->verify()) {
+            throw new FormException($form);
         }
-        if (mb_strlen($username) < 3) {
-            throw new InvalidArgumentException("Le nom d’utilisateur doit faire au moins 3 caractères.");
-        }
+
     }
 
 
