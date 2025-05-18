@@ -13,6 +13,7 @@ class Credential extends Entity
     public string $login;
     public string $password_encrypted;
     public string $notes;
-
+    public string $created_at;
+    public string $updated_at;
     public string $last_login;
 }

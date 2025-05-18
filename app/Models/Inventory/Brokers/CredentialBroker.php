@@ -2,6 +2,7 @@
 
 namespace Models\Inventory\Brokers;
 
+use Models\Inventory\Entities\Credential;
 use Zephyrus\Database\DatabaseBroker;
 use stdClass;
 
@@ -15,6 +16,27 @@ class CredentialBroker extends DatabaseBroker
             [$userId]
         );
     }
+
+    public function findById(int $id): ?Credential
+    {
+        $data = $this->selectSingle(
+            "SELECT
+                id,
+                user_id,
+                title,
+                url,
+                login,
+                password_encrypted,
+                notes,
+                created_at,
+                updated_at
+             FROM credentials
+             WHERE id = ?",
+            [$id]
+        );
+        return $data ? Credential::build($data) : null;
+    }
+
 
     public function insert(stdClass $credential): int
     {
@@ -35,6 +57,27 @@ class CredentialBroker extends DatabaseBroker
         );
         return (int) $row->id;
     }
+
+    public function updateCredential(Credential $credential): int
+    {
+        $this->selectSingle(
+            "UPDATE credentials SET
+                user_id = ?, title = ?, url = ?, login = ?, password_encrypted = ?, notes = ?, updated_at = NOW()
+                    WHERE id = ?",
+            [
+                $credential->user_id,
+                $credential->title,
+                $credential->url,
+                $credential->login,
+                $credential->password_encrypted,
+                $credential->notes,
+                $credential->id
+            ]
+        );
+        return $this->getLastAffectedCount() > 0;
+    }
+
+
 
     public function delete(int $id): bool
     {

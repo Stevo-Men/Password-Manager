@@ -3,8 +3,10 @@
 namespace Controllers;
 
 use Models\Inventory\Brokers\CredentialBroker;
+use Models\Inventory\Services\CredentialService;
 use Zephyrus\Application\Controller;
 use Zephyrus\Application\Rule;
+use Zephyrus\Core\Session;
 use Zephyrus\Network\Router\Get;
 use Zephyrus\Network\Router\Post;
 use Zephyrus\Network\Response;
@@ -13,10 +15,12 @@ use Zephyrus\Application\Flash;
 class CredentialsController extends Controller
 {
     private CredentialBroker $broker;
+    private CredentialService $service;
 
     public function __construct()
     {
         $this->broker = new CredentialBroker();
+        $this->service = new CredentialService();
     }
 
 
@@ -49,7 +53,7 @@ class CredentialsController extends Controller
         }
 
         $data = $form->buildObject();
-        $userId = $_SESSION['user_id'];
+        $userId = $_SESSION['userId'];
 
 
         $this->broker->insert((object)[
@@ -65,6 +69,66 @@ class CredentialsController extends Controller
         return $this->redirect('/dashboard');
     }
 
+
+
+
+
+
+    #[Get("/credentials/{id}/edit")]
+    public function edit(int $id): Response
+    {
+        $userId = Session::get('userId') ?? null;
+        if (!$userId) {
+            return $this->redirect('/login');
+        }
+
+        $credential = $this->broker->findById($id);
+        if (!$credential || $credential->user_id != $userId) {
+            Flash::error("Credential introuvable ou accès refusé.");
+            return $this->redirect('/dashboard');
+        }
+
+        $form = $this->buildForm();
+
+        return $this->render("credentials/edit", [
+            'credential' => $credential,
+            'form'       => $form,
+            'title'      => 'Modifier un credential'
+        ]);
+    }
+
+    #[Post("/credentials/{id}")]
+    public function update(int $id): Response
+    {
+        $userId = Session::get('userId') ?? null;
+        if (!$userId) {
+            return $this->redirect('/login');
+        }
+
+        $form = $this->buildForm();
+
+
+        $credential = $this->broker->findById($id);
+        $this->service->updateCredential($form, $credential);
+
+
+
+        if (!$form->verify()) {
+            $credential = $this->broker->findById($id);
+            return $this->render("credentials/edit", [
+                'credential' => $credential,
+                'form'       => $form,
+                'title'      => 'Modifier un credential'
+            ]);
+        }
+
+        Flash::success("Credential mis à jour avec succès !");
+        return $this->redirect('/dashboard');
+    }
+
+
+
+
     #[Post("/credentials/{id}/delete")]
     public function delete(int $id): Response
     {
@@ -75,4 +139,6 @@ class CredentialsController extends Controller
         }
         return $this->redirect('/dashboard');
     }
+
+
 }
