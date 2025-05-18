@@ -124,4 +124,9 @@ class ProfileService
             ];
         }
     }
+
+    public function updateAvatarPath(int $userId, string $path): void {
+        $this->broker->updateAvatarPath($userId, $path);
+    }
+
 }

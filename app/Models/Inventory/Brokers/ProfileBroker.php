@@ -12,7 +12,7 @@ class ProfileBroker extends DataBaseBroker
     public function findUserById(int $id): ?User
     {
         $data = $this->selectSingle(
-            "SELECT firstname, lastname, username, email, password_hash, created_at, updated_at, last_login FROM users WHERE id = ?",
+            "SELECT firstname, lastname, username, email, password_hash, avatar_path,  created_at, updated_at, last_login FROM users WHERE id = ?",
             [$id]
         );
 
@@ -69,6 +69,15 @@ class ProfileBroker extends DataBaseBroker
                 $user->salt,
                 $userId
             ]
+        );
+        return $this->getLastAffectedCount() > 0;
+    }
+
+    public function updateAvatarPath(int $id, string $path): bool
+    {
+        $this->rawQuery(
+            "UPDATE users SET avatar_path = ?, updated_at = now() WHERE id = ?",
+            [$path, $id]
         );
         return $this->getLastAffectedCount() > 0;
     }

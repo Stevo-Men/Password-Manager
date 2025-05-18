@@ -1,11 +1,33 @@
 {layout layouts/main.latte}
-{include profile/edit.latte}
+
 
 
 {block content}
-    {include layouts/components/header.latte}
+    <div class="container">
+{include ./layouts/components/header.latte}
+
     <section class="container mt-5" style="max-width: 600px;">
         <h1 class="mb-4 text-center">Mon profil</h1>
+
+        {if $user->avatar_path}
+            <img
+                    src="{$basePath}{$user->avatar_path}"
+                    alt="Avatar"
+                    class="profile-avatar rounded-circle mb-3"
+            >
+        {else}
+            <img
+                    src="{$basePath}/assets/images/avatars/default-avatar.png"
+                    alt="Avatar par défaut"
+                    class="profile-avatar rounded-circle mb-3"
+            >
+        {/if}
+
+
+        <form action="{$basePath}/profile/avatar" method="post" enctype="multipart/form-data">
+            <input type="file" name="avatar" accept="image/*" required>
+            <button type="submit">Téléverser</button>
+        </form>
         <div class="card shadow-sm">
             <div class="card-body">
                 <dl class="row mb-0">
@@ -42,4 +64,5 @@
             </div>
         </div>
     </section>
+</div>
 {/block}

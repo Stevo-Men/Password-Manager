@@ -26,10 +26,7 @@ class ProfileController extends Controller
     public function index(): Response
     {
         $userId = Session::get('userId') ?? null;
-
-        if (!$userId) {
-            return $this->redirect('/login');
-        }
+        $this->requireLogin($userId,'/login');
 
         try {
             $user = $this->service->getProfile($userId);
@@ -48,9 +45,7 @@ class ProfileController extends Controller
     public function edit(): Response
     {
         $userId = Session::get('userId') ?? null;
-        if (!$userId) {
-            return $this->redirect('/login');
-        }
+        $this->requireLogin($userId,'/login');
 
         $form = $this->buildForm();
         $user = $this->service->getProfile($userId);
@@ -66,12 +61,9 @@ class ProfileController extends Controller
     public function update(): Response
     {
         $userId = Session::get('userId') ?? null;
-        if (!$userId) {
-            return $this->redirect('/login');
-        }
-        $form = $this->buildForm();
-        $newUsername = $form->getValue('username');
+        $this->requireLogin($userId,'/login');
 
+        $form = $this->buildForm();
 
         $data = $this->service->updateUsername($userId, $form);
 
@@ -94,7 +86,6 @@ class ProfileController extends Controller
     #[Get("/profile/change-password")]
     public function editPassword(): Response
     {
-
         $form = $this->buildForm();
         return $this->render("profile/change-password", [
             'form'  => $form,
@@ -107,17 +98,13 @@ class ProfileController extends Controller
     public function updatePassword(): Response
     {
         $form = $this->buildForm();
-        $userId = Session::get('userId') ?? null;
-        if (!$userId) {
-            return $this->redirect('/login');
-        }
 
+        $userId = Session::get('userId') ?? null;
+        $this->requireLogin($userId,'/login');
 
         $newPassword  = $form->getValue('new_password');
 
-
         $data = $this->service->changePassword($form,$userId, $newPassword);
-
         $form = $data["form"];
         $errors = $data["errors"];
 
@@ -125,10 +112,47 @@ class ProfileController extends Controller
         if ($errors) {
             return $this->render("profile/change-password", ['form' => $form, 'errors' => $errors]);
         }
-
             return $this->redirect('/profile');
-
     }
+
+    #[Post("/profile/avatar")]
+    public function uploadAvatar(): Response
+    {
+        $userId = Session::get('userId') ?? null;
+        $this->requireLogin($userId,'/login');
+
+
+        if (empty($_FILES['avatar']) || $_FILES['avatar']['error'] !== UPLOAD_ERR_OK) {
+            Flash::error("Upload invalide");
+            return $this->redirect('/profile');
+        }
+
+        $tmp      = $_FILES['avatar']['tmp_name'];
+        $ext      = pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION);
+        $filename = "avatar_{$userId}_" . time() . ".{$ext}";
+
+
+        $projectRoot = dirname(__DIR__, 3); // /var/www/html
+        $uploadDir   = $projectRoot . '/public/assets/images/avatars/';
+        if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true)) {
+            Flash::error("Impossible de créer le dossier d’upload");
+            return $this->redirect('/profile');
+        }
+
+        $destination = $uploadDir . $filename;
+        if (!move_uploaded_file($tmp, $destination)) {
+            Flash::error("Échec du déplacement du fichier vers {$destination}");
+            return $this->redirect('/profile');
+        }
+
+        // On stocke en base le chemin relatif sous public/
+        $relativePath = 'assets/images/avatars/' . $filename;
+        $this->service->updateAvatarPath($userId, $relativePath);
+
+        Flash::success("Avatar mis à jour");
+        return $this->redirect('/profile');
+    }
+
 
 
 }

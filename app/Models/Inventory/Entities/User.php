@@ -13,6 +13,7 @@ class User extends Entity
     public string $password_hash;
     public string $email_hash;
     public string $salt;
+    public ?string $avatar_path = null;
     public string $created_at;
     public string $updated_at;
     public ?string $last_login = null;

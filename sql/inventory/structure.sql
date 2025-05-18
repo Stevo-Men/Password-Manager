@@ -11,6 +11,7 @@ CREATE TABLE users (
                        salt             TEXT NOT NULL,
                        password_hash    TEXT NOT NULL,
                        email_hash       TEXT NOT NULL UNIQUE,
+                       avatar_path      TEXT NULL,
                        created_at       TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
                        updated_at       TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
                        last_login       TIMESTAMP WITHOUT TIME ZONE
