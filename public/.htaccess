@@ -20,6 +20,13 @@ RewriteRule ^/?(.+)/?$ index.php [NC,L,QSA]
 RewriteCond %{THE_REQUEST} ^.+?\ [^?]+\.php[?\ ]
 RewriteRule ^/?.*\.php$ - [R=404]
 
+# ex. dans public/.htaccess
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+RewriteRule ^ index.php [QSA,L]
+
 # Experation rules
 <IfModule mod_expires.c>
 	ExpiresActive on
