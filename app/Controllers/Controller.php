@@ -5,6 +5,7 @@ use Zephyrus\Application\Controller as BaseController;
 use Models\Core\Application;
 use Zephyrus\Application\Configuration;
 use Zephyrus\Application\Flash;
+use Zephyrus\Core\Session;
 use Zephyrus\Network\Response;
 use Zephyrus\Security\ContentSecurityPolicy;
 use Zephyrus\Security\SecureHeader;
@@ -14,6 +15,13 @@ abstract class Controller extends BaseController
     public function before(): ?Response
     {
         return parent::before();
+    }
+
+    protected function requireLogin($userId, string $url): void
+    {
+        if (!$userId) {
+            $this->redirect($url);
+        }
     }
 
     public function render(string $page, array $args = []): Response

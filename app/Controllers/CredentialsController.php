@@ -4,7 +4,7 @@ namespace Controllers;
 
 use Models\Inventory\Brokers\CredentialBroker;
 use Models\Inventory\Services\CredentialService;
-use Zephyrus\Application\Controller;
+
 use Zephyrus\Application\Rule;
 use Zephyrus\Core\Session;
 use Zephyrus\Network\Router\Get;
@@ -27,6 +27,9 @@ class CredentialsController extends Controller
     #[Get("/credentials/create")]
     public function create(): Response
     {
+        $userId = Session::get('userId') ?? null;
+        $this->requireLogin($userId,'/login');
+
         $form = $this->buildForm();
         return $this->render("credentials/form", [
             'form'  => $form,
@@ -38,6 +41,9 @@ class CredentialsController extends Controller
     #[Post("/credentials")]
     public function store(): Response
     {
+        $userId = Session::get('userId') ?? null;
+        $this->requireLogin($userId,'/login');
+
         $form = $this->buildForm();
         $form->field('title',    [Rule::required("Le titre est requis")]);
         $form->field('url',      []);
@@ -78,9 +84,7 @@ class CredentialsController extends Controller
     public function edit(int $id): Response
     {
         $userId = Session::get('userId') ?? null;
-        if (!$userId) {
-            return $this->redirect('/login');
-        }
+        $this->requireLogin($userId,'/login');
 
         $credential = $this->broker->findById($id);
         if (!$credential || $credential->user_id != $userId) {
@@ -101,9 +105,7 @@ class CredentialsController extends Controller
     public function update(int $id): Response
     {
         $userId = Session::get('userId') ?? null;
-        if (!$userId) {
-            return $this->redirect('/login');
-        }
+        $this->requireLogin($userId,'/login');
 
         $form = $this->buildForm();
 
