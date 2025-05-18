@@ -1,68 +1,78 @@
 {layout layouts/main.latte}
 
+
 {block content}
-    <section class="login-section">
-        <h1>Connexion</h1>
+    <div class="container">
+        <section class="login-section">
 
-        {if !empty($form->getErrors())}
-            <div class="alert alert-danger">
-                {foreach $form->getErrors() as $field => $messages}
-                    {foreach $messages as $error}
-                        <p>{$error|escape}</p>
+            <div class="logo-container p-5">
+                <img src="http://localhost/public/assets/images/sleutel/logo-main.png" alt="logo primaire" class="logo-tweak mb-3">
+                <h1 class="nabla-font primary-logo-text">Sleutel</h1>
+            </div>
+
+
+
+            {if !empty($form->getErrors())}
+                <div class="alert alert-danger">
+                    {foreach $form->getErrors() as $field => $messages}
+                        {foreach $messages as $error}
+                            <p>{$error|escape}</p>
+                        {/foreach}
                     {/foreach}
-                {/foreach}
-            </div>
-        {/if}
-
-        <form action="{$basePath}/login" method="post" novalidate>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input
-                        type="text"
-                        id="email"
-                        name="email"
-                        class="form-control {if isset($form->getErrors()['email'])}is-invalid{/if}"
-                        value="{$form->getValue('email')|escape}"
-                        required
-                        autofocus
-                >
-                {if isset($form->getErrors()['email'])}
-                    <div class="invalid-feedback">
-                        {$form->getErrors()['email'][0]|escape}
-                    </div>
-                {/if}
-            </div>
-
-            <div class="mb-4 position-relative">
-                <label for="password" class="form-label">Mot de passe</label>
-                <div class="input-group">
-                    <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            class="form-control {if isset($form->getErrors()['password'])}is-invalid{/if}"
-                            required
-                    >
-                    <button
-                            type="button"
-                            class="btn btn-outline-secondary password-toggle"
-                            data-target="password"
-                            aria-label="Afficher/masquer le mot de passe"
-                    >👁</button>
                 </div>
-                {if isset($form->getErrors()['password'])}
-                    <div class="invalid-feedback d-block">
-                        {$form->getErrors()['password'][0]|escape}
+            {/if}
+
+            <form action="{$basePath}/login" method="post" novalidate>
+                <div class="mb-3">
+                    <label for="email" class="form-label ">Email</label>
+                    <input
+                            type="text"
+                            id="email"
+                            name="email"
+                            class="form-control {if isset($form->getErrors()['email'])}is-invalid{/if}"
+                            value="{$form->getValue('email')|escape}"
+                            required
+                            autofocus
+                    >
+                    {if isset($form->getErrors()['email'])}
+                        <div class="invalid-feedback">
+                            {$form->getErrors()['email'][0]|escape}
+                        </div>
+                    {/if}
+                </div>
+
+                <div class="mb-4 position-relative">
+                    <label for="password" class="form-label">Mot de passe</label>
+                    <div class="input-group">
+                        <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                class="form-control  {if isset($form->getErrors()['password'])}is-invalid{/if}"
+                                required
+                        >
+                        <button
+                                type="button"
+                                class="btn btn-outline-secondary password-toggle"
+                                data-target="password"
+                                aria-label="Afficher/masquer le mot de passe"
+                        >👁</button>
                     </div>
-                {/if}
-            </div>
+                    {if isset($form->getErrors()['password'])}
+                        <div class="invalid-feedback d-block">
+                            {$form->getErrors()['password'][0]|escape}
+                        </div>
+                    {/if}
+                </div>
 
-            <button type="submit" class="btn btn-primary w-100">Se connecter</button>
-        </form>
+                <button class="button-retro" type="submit" role="button">Se connecter</button>
 
-        <p class="mt-3 text-center">
-            Vous n'avez pas de compte ?
-            <a href="{$basePath}/register">Inscription</a>.
-        </p>
-    </section>
+            </form>
+
+            <p class="mt-3 text-center">
+                Vous n'avez pas de compte ?
+                <a href="{$basePath}/register">Inscription</a>.
+            </p>
+        </section>
+    </div>
 {/block}

@@ -18,4 +18,9 @@ h1 {
             font-variation-settings:
                     "EDPT" 100,
                     "EHLT" 12;
-        }
+}
+
+.primary-logo-text {
+    font-size: 4rem;
+}
+

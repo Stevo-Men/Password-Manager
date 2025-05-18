@@ -1,6 +1,6 @@
 /* Couleurs principales */
 :root {
-    --bg-color: #0b1d36;
+    --bg-color: #172155;
     --text-color: #f5f5f5;
     --accent-color: #ffb703;
     --button-hover: #ffa500;
@@ -13,6 +13,10 @@ body {
     font-family: 'Segoe UI', sans-serif;
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
 
 /* Liens */
@@ -44,7 +48,7 @@ input[type="email"],
 input[type="password"],
 select,
 textarea {
-    background-color: #102842;
+    background-color: #172155;
     color: var(--text-color);
     border: 1px solid #2c3e50;
     padding: 8px;
@@ -53,15 +57,22 @@ textarea {
 
 /* Conteneurs généraux */
 .container, .card {
-    background-color: #152d4f;
+    background-color: #1d2e65;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+    display: block;
 }
 
 /* Titres */
 h1, h2, h3 {
     color: var(--accent-color);
+}
+
+h2 {
+    font-size: 4rem;
+    font-weight: 300;
 }
 
 
@@ -75,3 +86,58 @@ h1, h2, h3 {
     border: 3px solid #ffffff;
     box-shadow: 0 0 0 2px #111920;
 }
+
+.logo-tweak {
+    width: 130px;
+    height: 110px;
+    border-radius: 0 !important;
+    display: block;
+    object-fit: cover;
+    margin: 0 auto 0rem;
+}
+
+.logo-text {
+    height: 70px !important;
+}
+
+.logo-container {
+
+    display: block;
+    object-fit: cover;
+    margin: 0 auto 0rem;
+}
+
+
+.form-control:hover, .form-control:focus {
+    background-color: #090d22 !important;
+    transition: background-color 0.3s ease;
+    transition-duration: 0.2s;
+    color: antiquewhite !important;
+}
+
+.container-register {
+    background-color: var(--bg-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    display: block;
+}
+
+.registration-logo {
+    display: block;
+    max-width: 250px;
+    height: auto;
+    margin: 0 auto;
+}
+
+
+.form-text {
+    color: var(--text-color);
+}
+
+@media (max-width: 767px) {
+    .registration-logo {
+        margin-bottom: 1.5rem;
+    }
+}
+

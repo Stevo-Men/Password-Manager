@@ -1,131 +1,153 @@
 {layout layouts/main.latte}
 
 {block content}
-    <section class="register-section container mt-5" style="max-width: 500px;">
-        <h1 class="mb-4">Inscription</h1>
+    <section class="register-section container-fluid mt-5 px-0">
+        <div class="row g-0 justify-content-center align-items-center">
+        <div class="col-auto px-0">
+            <img src="http://localhost/public/assets/images/sleutel/logo-main.png"
+                 alt="logo primaire"
+                 class="registration-logo m-5">
+        </div>
 
-        {if !empty($form->getErrors())}
-            <div class="alert alert-danger">
-                {foreach $form->getErrors() as $field => $messages}
-                    {foreach $messages as $error}
-                        <p>{$error|escape}</p>
+        <div class="col-12 col-md-6 px-3">
+            <div class="card p-4 mx-auto" style="max-width:500px;">
+                <h1 class="mb-4 text-center">Inscription</h1>
+
+
+            {if !empty($form->getErrors())}
+                <div class="alert alert-danger">
+                    {foreach $form->getErrors() as $field => $messages}
+                        {foreach $messages as $error}
+                            <p>{$error|escape}</p>
+                        {/foreach}
                     {/foreach}
-                {/foreach}
-            </div>
-        {/if}
-
-        <form action="{$basePath}/register" method="post" novalidate>
+                </div>
+            {/if}
 
 
-            <div class="mb-3">
-                <label for="firstname" class="form-label">Prénom</label>
-                <input
-                        type="text"
-                        id="firstname"
-                        name="firstname"
-                        class="form-control {if isset($form->getErrors()['firstname'])}is-invalid{/if}"
-                        value="{$form->getValue('firstname')|escape}"
-                        required
-                        autofocus
-                >
-                {if isset($form->getErrors()['firstname'])}
-                    <div class="invalid-feedback">
-                        {$form->getErrors()['firstname'][0]|escape}
-                    </div>
-                {/if}
-            </div>
 
-            <div class="mb-3">
-                <label for="lastname" class="form-label">Nom</label>
-                <input
-                        type="text"
-                        id="lastname"
-                        name="lastname"
-                        class="form-control {if isset($form->getErrors()['lastname'])}is-invalid{/if}"
-                        value="{$form->getValue('lastname')|escape}"
-                        required
-                        autofocus
-                >
-                {if isset($form->getErrors()['lastname'])}
-                    <div class="invalid-feedback">
-                        {$form->getErrors()['lastname'][0]|escape}
-                    </div>
-                {/if}
-            </div>
 
-            <div class="mb-3">
-                <label for="username" class="form-label">Nom d'utilisateur</label>
-                <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        class="form-control {if isset($form->getErrors()['username'])}is-invalid{/if}"
-                        value="{$form->getValue('username')|escape}"
-                        required
-                        autofocus
-                >
-                {if isset($form->getErrors()['username'])}
-                    <div class="invalid-feedback">
-                        {$form->getErrors()['username'][0]|escape}
-                    </div>
-                {/if}
-            </div>
+            <form action="{$basePath}/register" class="form-text" method="post" novalidate>
+                <div class="mb-3">
+                    <label for="firstname" class="form-label">Prénom</label>
+                    <input
+                            type="text"
+                            id="firstname"
+                            name="firstname"
+                            class="form-control {if isset($form->getErrors()['firstname'])}is-invalid{/if}"
+                            value="{$form->getValue('firstname')|escape}"
+                            required
+                            autofocus
+                    >
+                    {if isset($form->getErrors()['firstname'])}
+                        <div class="invalid-feedback">
+                            {$form->getErrors()['firstname'][0]|escape}
+                        </div>
+                    {/if}
+                </div>
 
-            <div class="mb-3">
-                <label for="email" class="form-label">Adresse e-mail</label>
-                <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        class="form-control {if isset($form->getErrors()['email'])}is-invalid{/if}"
-                        value="{$form->getValue('email')|escape}"
-                        required
-                >
-                {if isset($form->getErrors()['email'])}
-                    <div class="invalid-feedback">
-                        {$form->getErrors()['email'][0]|escape}
-                    </div>
-                {/if}
-            </div>
+                <div class="mb-3">
+                    <label for="lastname" class="form-label">Nom</label>
+                    <input
+                            type="text"
+                            id="lastname"
+                            name="lastname"
+                            class="form-control {if isset($form->getErrors()['lastname'])}is-invalid{/if}"
+                            value="{$form->getValue('lastname')|escape}"
+                            required
+                            autofocus
+                    >
+                    {if isset($form->getErrors()['lastname'])}
+                        <div class="invalid-feedback">
+                            {$form->getErrors()['lastname'][0]|escape}
+                        </div>
+                    {/if}
+                </div>
 
-            <div class="mb-3">
-                <label for="password" class="form-label">Mot de passe</label>
-                <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        class="form-control {if isset($form->getErrors()['password'])}is-invalid{/if}"
-                        required
-                >
-                {if isset($form->getErrors()['password'])}
-                    <div class="invalid-feedback">
-                        {$form->getErrors()['password'][0]|escape}
-                    </div>
-                {/if}
-            </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Nom d'utilisateur</label>
+                    <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            class="form-control {if isset($form->getErrors()['username'])}is-invalid{/if}"
+                            value="{$form->getValue('username')|escape}"
+                            required
+                            autofocus
+                    >
+                    {if isset($form->getErrors()['username'])}
+                        <div class="invalid-feedback">
+                            {$form->getErrors()['username'][0]|escape}
+                        </div>
+                    {/if}
+                </div>
 
-            <div class="mb-3">
-                <label for="password_confirm" class="form-label">Confirmation du mot de passe</label>
-                <input
-                        type="password"
-                        id="password_confirm"
-                        name="password_confirm"
-                        class="form-control {if isset($form->getErrors()['password_confirm'])}is-invalid{/if}"
-                        required
-                >
-                {if isset($form->getErrors()['password_confirm'])}
-                    <div class="invalid-feedback">
-                        {$form->getErrors()['password_confirm'][0]|escape}
-                    </div>
-                {/if}
-            </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Adresse e-mail</label>
+                    <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control {if isset($form->getErrors()['email'])}is-invalid{/if}"
+                            value="{$form->getValue('email')|escape}"
+                            required
+                    >
+                    {if isset($form->getErrors()['email'])}
+                        <div class="invalid-feedback">
+                            {$form->getErrors()['email'][0]|escape}
+                        </div>
+                    {/if}
+                </div>
 
-            <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
-        </form>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Mot de passe</label>
+                    <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-control {if isset($form->getErrors()['password'])}is-invalid{/if}"
+                            required
+                    >
+                    {if isset($form->getErrors()['password'])}
+                        <div class="invalid-feedback">
+                            {$form->getErrors()['password'][0]|escape}
+                        </div>
+                    {/if}
+                </div>
 
-        <p class="mt-3 text-center">
-            Vous avez déjà un compte ?
-            <a href="{$basePath}/login">Connectez-vous</a>.
-        </p>
+                <div class="mb-3">
+                    <label for="password_confirm" class="form-label">Confirmation du mot de passe</label>
+                    <input
+                            type="password"
+                            id="password_confirm"
+                            name="password_confirm"
+                            class="form-control {if isset($form->getErrors()['password_confirm'])}is-invalid{/if}"
+                            required
+                    >
+                    {if isset($form->getErrors()['password_confirm'])}
+                        <div class="invalid-feedback">
+                            {$form->getErrors()['password_confirm'][0]|escape}
+                        </div>
+                    {/if}
+                </div>
+
+                <button type="submit" class="button-retro">S'inscrire</button>
+            </form>
+
+            <p class="mt-3 text-center">
+                Vous avez déjà un compte ?
+                <a href="{$basePath}/login">Connectez-vous</a>.
+            </p>
+
+
+
+        </div>
+    </div>
+        <div class="col-auto px-0">
+            <img src="http://localhost/public/assets/images/sleutel/logo-main.png"
+                 class="registration-logo m-5"
+                 alt="logo droite">
+        </div>
+    </div>
     </section>
 {/block}
