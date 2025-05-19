@@ -65,6 +65,13 @@ textarea {
     display: block;
 }
 
+.outside-container {
+    background-color: rgba(255, 255, 255, 0)!important;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0) !important;
+
+}
+
 /* Titres */
 h1, h2, h3 {
     color: var(--accent-color);
@@ -112,7 +119,7 @@ h2 {
     background-color: #090d22 !important;
     transition: background-color 0.3s ease;
     transition-duration: 0.2s;
-    color: antiquewhite !important;
+    color: antiquewhite ;
 }
 
 .container-register {

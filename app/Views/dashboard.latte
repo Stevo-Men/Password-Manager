@@ -1,10 +1,10 @@
 {layout layouts/main.latte}
 
 {block content}
-
+    {include layouts/components/header.latte}
     <div class="container">
 
-        {include layouts/components/header.latte}
+
      <h1 class="p-5">Tableau de bord</h1>
 
 
@@ -12,12 +12,12 @@
 
 
     <h3>Vos credentials</h3>
-    <a href="{$basePath}/credentials/create" class="btn btn-primary mb-3">+ Ajouter un credential</a>
+    <a href="{$basePath}/credentials/create" class="button-retro px-2 mb-3">+ Ajouter un credential</a>
 
     {if empty($credentials)}
          <p>Aucun credential trouvé.</p>
      {else}
-         <table class="table table-striped">
+         <table class="table table-striped mt-4">
              <thead>
              <tr>
                  <th>Titre</th>
@@ -37,14 +37,14 @@
                          {/if}
                      </td>
                      <td>
-                         <a href="{$basePath}/credentials/{$c->id}/edit" class="btn btn-sm btn-secondary">✏️</a>
+                         <a href="{$basePath}/credentials/{$c->id}/edit" class="btn-secondary button-retro">✏️</a>
                          <form
                                  action="{$basePath}/credentials/{$c->id}/delete"
                                  method="post"
                                  style="display:inline"
                                  onsubmit="return confirm('Voulez-vous vraiment supprimer ce credential « {$c->title|escape} » ?');"
                          >
-                             <button type="submit" class="btn btn-sm btn-danger">🗑️</button>
+                             <button type="submit" class="btn-danger button-retro">🗑️</button>
                          </form>
                      </td>
                  </tr>

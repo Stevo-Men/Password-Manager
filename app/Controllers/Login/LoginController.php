@@ -3,6 +3,7 @@
 namespace Controllers\Login;
 
 use Models\Inventory\Services\LoginService;
+use Models\Inventory\Services\TwoFaService;
 use Zephyrus\Application\Controller;
 use Zephyrus\Network\Router\Get;
 use Zephyrus\Network\Router\Post;
@@ -12,9 +13,11 @@ class LoginController extends Controller
 {
     private LoginService $loginService;
 
+
     public function __construct()
     {
         $this->loginService = new LoginService();
+
     }
 
     #[Get("/login")]
@@ -41,6 +44,12 @@ class LoginController extends Controller
             return $this->render("login", ['form' => $form]);
         }
 
+
         return $this->redirect('/dashboard');
+        //return $this->redirect('/login/2fa');
+
     }
+
+
+
 }

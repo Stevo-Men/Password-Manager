@@ -2,6 +2,7 @@
 
 use Models\Inventory\Services\RegisterService;
 use Zephyrus\Application\Controller;
+use Zephyrus\Application\Flash;
 use Zephyrus\Network\Router\Get;
 use Zephyrus\Network\Router\Post;
 use Zephyrus\Network\Response;
@@ -36,6 +37,7 @@ class RegisterController extends Controller
             return $this->render("register", ['form' => $form]);
         }
 
+        Flash::success("Votre compte a été créé");
         return $this->redirect('/login');
     }
 }

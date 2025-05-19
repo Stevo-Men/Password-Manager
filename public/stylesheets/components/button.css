@@ -21,6 +21,12 @@
     left: 5px;
 }
 
+.button-retro:hover {
+    text-decoration: none;
+    background-color: rgb(0, 0, 0) !important;
+    color: #ffb703;
+}
+
 @media (min-width: 768px) {
     .button-retro {
         padding: 0.25em 0.75em;

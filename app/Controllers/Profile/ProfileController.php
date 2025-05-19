@@ -28,11 +28,8 @@ class ProfileController extends Controller
         $userId = Session::get('userId') ?? null;
         $this->requireLogin($userId,'/login');
 
-        try {
-            $user = $this->service->getProfile($userId);
-        } catch (\InvalidArgumentException $e) {
-            return $this->redirect('/login');
-        }
+        $user = $this->service->getProfile($userId);
+
 
         return $this->render("profile", [
             'user'  => $user,

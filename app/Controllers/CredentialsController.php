@@ -46,13 +46,7 @@ class CredentialsController extends Controller
         $this->requireLogin($userId, '/login');
 
         $form = $this->buildForm();
-        // déclarez ici vos règles sur $form->field(…) comme pour create()
-
-        // ① validation CSRF + règles
-
-
-        // ③ appel au service : on passe le userId + l’objet contenant les valeurs
-        $credential = $this->service->createCredential($userId, $form);
+        $this->service->createCredential($userId, $form);
 
         if (!$form->verify()) {
             return $this->render("credentials/form", [
@@ -61,7 +55,6 @@ class CredentialsController extends Controller
             ]);
         }
 
-        Flash::success("Credential « {$credential->title} » ajouté avec succès !");
         return $this->redirect('/dashboard');
     }
 

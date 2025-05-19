@@ -3,7 +3,7 @@
 
 
 {block content}
-    <div class="container">
+    <div class="container outside-container">
 {include ./layouts/components/header.latte}
 
     <section class="container mt-5" style="max-width: 600px;">
@@ -26,9 +26,9 @@
 
         <form action="{$basePath}/profile/avatar" method="post" enctype="multipart/form-data">
             <input type="file" name="avatar" accept="image/*" required>
-            <button type="submit">Téléverser</button>
+            <button type="submit" class="button-retro">Téléverser</button>
         </form>
-        <div class="card shadow-sm">
+        <div class="card shadow-sm text-white">
             <div class="card-body">
                 <dl class="row mb-0">
                     <dt class="col-sm-4">Prénom</dt>
@@ -53,14 +53,14 @@
                 </dl>
             </div>
             <div class="card-footer text-end">
-                <a href="{$basePath}/profile/edit" class="btn btn-primary">
+                <button href="{$basePath}/profile/edit" class="button-retro">
                     Modifier le username
-                </a>
+                </button>
             </div>
             <div class="card-footer text-end">
-                <a href="{$basePath}/profile/change-password" class="btn btn-primary">
+                <button href="{$basePath}/profile/change-password" class="button-retro">
                     Modifier le mot le passe
-                </a>
+                </button>
             </div>
         </div>
     </section>

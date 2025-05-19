@@ -5,6 +5,7 @@ namespace Models\Inventory\Services;
 use Models\Inventory\Brokers\CredentialBroker;
 use Models\Inventory\Entities\Credential;
 use Models\Inventory\Validators\CredentialValidator;
+use Zephyrus\Application\Flash;
 
 
 class CredentialService
@@ -33,6 +34,7 @@ class CredentialService
 
 
             $this->broker->insertCredential($credential);
+            Flash::success("Credential « {$credential->title} » ajouté avec succès !");
             return [
                 'form' => $form
             ];

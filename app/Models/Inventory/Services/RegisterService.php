@@ -6,7 +6,6 @@ use Models\Inventory\Entities\User;
 use Models\Inventory\Services\Cryptography\CryptographyService;
 use Models\Inventory\Validators\RegisterValidator;
 use Models\Inventory\Brokers\UserBroker;
-use Zephyrus\Application\Form;
 use Zephyrus\Security\Cryptography;
 use Zephyrus\Network\Router\Post;
 
@@ -58,6 +57,7 @@ class RegisterService
 
 
             CryptographyService::setUserContext($newUserId, $userKey);
+
 
             return [
                 'form' => $form
