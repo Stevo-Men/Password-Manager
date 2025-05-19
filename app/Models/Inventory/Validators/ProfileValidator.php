@@ -4,6 +4,7 @@ namespace Models\Inventory\Validators;
 
 use Models\Exceptions\FormException;
 use Models\Inventory\Entities\User;
+use PhpParser\Error;
 use Zephyrus\Application\Form;
 use Zephyrus\Application\Rule;
 use Zephyrus\Security\Cryptography;

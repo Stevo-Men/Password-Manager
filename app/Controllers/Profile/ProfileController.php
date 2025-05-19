@@ -145,7 +145,6 @@ class ProfileController extends Controller
             return $this->redirect('/profile');
         }
 
-        // On stocke en base le chemin relatif sous public/
         $relativePath = 'assets/images/avatars/' . $filename;
         $this->service->updateAvatarPath($userId, $relativePath);
 

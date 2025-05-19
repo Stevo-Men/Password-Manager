@@ -38,10 +38,10 @@ class CredentialBroker extends DatabaseBroker
     }
 
 
-    public function insert(stdClass $credential): int
+    public function insertCredential(Credential $credential): int
     {
 
-        $row = $this->query(
+        $this->selectSingle(
             "INSERT INTO credentials 
                 (user_id, title, url, login, password_encrypted, notes, created_at, updated_at)
              VALUES (?, ?, ?, ?, ?, ?, now(), now())
@@ -55,7 +55,7 @@ class CredentialBroker extends DatabaseBroker
                 $credential->notes
             ]
         );
-        return (int) $row->id;
+        return $this->getLastAffectedCount() > 0;
     }
 
     public function updateCredential(Credential $credential): int

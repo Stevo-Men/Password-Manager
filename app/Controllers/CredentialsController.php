@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Models\Inventory\Brokers\CredentialBroker;
+use Models\Inventory\Entities\Credential;
 use Models\Inventory\Services\CredentialService;
 
 use Zephyrus\Application\Rule;
@@ -42,36 +43,25 @@ class CredentialsController extends Controller
     public function store(): Response
     {
         $userId = Session::get('userId') ?? null;
-        $this->requireLogin($userId,'/login');
+        $this->requireLogin($userId, '/login');
 
         $form = $this->buildForm();
-        $form->field('title',    [Rule::required("Le titre est requis")]);
-        $form->field('url',      []);
-        $form->field('login',    [Rule::required("Le login est requis")]);
-        $form->field('password',[Rule::required("Le mot de passe est requis")]);
-        $form->field('notes',    []);
+        // déclarez ici vos règles sur $form->field(…) comme pour create()
+
+        // ① validation CSRF + règles
+
+
+        // ③ appel au service : on passe le userId + l’objet contenant les valeurs
+        $credential = $this->service->createCredential($userId, $form);
 
         if (!$form->verify()) {
             return $this->render("credentials/form", [
                 'form'  => $form,
-                'title' => 'Ajout d\'identification'
+                'title' => 'Ajouter un credential'
             ]);
         }
 
-        $data = $form->buildObject();
-        $userId = $_SESSION['userId'];
-
-
-        $this->broker->insert((object)[
-            'user_id'            => $userId,
-            'title'              => $data->title,
-            'url'                => $data->url,
-            'login'              => $data->login,
-            'password_encrypted' => $data->password,
-            'notes'              => $data->notes
-        ]);
-
-        Flash::success("Credential « {$data->title} » ajouté avec succès !");
+        Flash::success("Credential « {$credential->title} » ajouté avec succès !");
         return $this->redirect('/dashboard');
     }
 
@@ -109,10 +99,8 @@ class CredentialsController extends Controller
 
         $form = $this->buildForm();
 
-
         $credential = $this->broker->findById($id);
         $this->service->updateCredential($form, $credential);
-
 
 
         if (!$form->verify()) {
@@ -134,6 +122,7 @@ class CredentialsController extends Controller
     #[Post("/credentials/{id}/delete")]
     public function delete(int $id): Response
     {
+        //TO-DO ajouté confirmation
         if ($this->broker->delete($id)) {
             Flash::success("Credential supprimé avec succès.");
         } else {
