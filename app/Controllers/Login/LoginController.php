@@ -34,17 +34,13 @@ class LoginController extends Controller
     public function login(): Response
     {
         $form = $this->buildForm();
-
         $data = $this->loginService->login($form);
 
         $form = $data["form"];
         $errors = $data["errors"];
-
         if ($errors) {
             return $this->render("login", ['form' => $form, 'errors' => $errors]);
         }
-
-
 
         return $this->redirect('/login/2fa');
 

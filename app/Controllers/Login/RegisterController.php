@@ -27,7 +27,6 @@ class RegisterController extends Controller
     public function register(): Response
     {
         $form = $this->buildForm();
-
         $data = $this->service->register($form);
 
         $form = $data["form"];

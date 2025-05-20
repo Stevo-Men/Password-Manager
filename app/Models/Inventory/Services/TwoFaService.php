@@ -2,6 +2,7 @@
 
 namespace Models\Inventory\Services;
 
+use Cassandra\Uuid;
 use Models\Inventory\Brokers\TwoFaBroker;
 use Models\Inventory\Validators\TwoFaValidator;
 use Nette\Mail\Message;
@@ -59,6 +60,5 @@ class TwoFaService
         $this->broker->markUsed($row->id);
         return true;
     }
-
 
 }

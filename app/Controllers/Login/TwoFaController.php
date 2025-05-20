@@ -4,6 +4,7 @@ namespace Controllers\Login;
 
 use Controllers\Controller;
 use Models\Inventory\Services\TwoFaService;
+use Zephyrus\Application\Flash;
 use Zephyrus\Core\Session;
 use Zephyrus\Network\Response;
 use Zephyrus\Network\Router\Get;
@@ -22,9 +23,9 @@ class TwoFaController extends Controller
     #[Get("/login/2fa")]
     public function twoFaForm(): Response
     {
-        if (empty($_SESSION['pending_2fa_user'])) {
-            return $this->redirect('/login');
-        }
+//        if (empty($_SESSION['pending_2fa_user'])) {
+//            return $this->redirect('/login');
+//        }
         $form = $this->buildForm();
         return $this->render('login/2fa', ['form'=>$form]);
     }
@@ -33,9 +34,9 @@ class TwoFaController extends Controller
     public function twoFaCheck(): Response
     {
         $form = $this->buildForm();
-
-
         $userId = Session::get('userId') ?? null;
+
+
         if ($this->twoFaService->verifyCode($userId,$form)) {
             unset($_SESSION['pending_2fa_user']);
             $_SESSION['userId'] = $userId;

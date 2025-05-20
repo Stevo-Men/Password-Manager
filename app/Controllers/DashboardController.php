@@ -21,9 +21,7 @@ class DashboardController extends Controller
     public function index(): Response
     {
         $userId = Session::get('userId') ?? null;
-        if (!$userId) {
-            return $this->redirect('/login');
-        }
+        $this->requireLogin($userId,'/login');
 
         $credentials = $this->broker->findByUser($userId);
 
@@ -40,7 +38,6 @@ class DashboardController extends Controller
     public function logout(): Response
     {
         Session::destroy();
-
         return $this->redirect('/login');
     }
 }
