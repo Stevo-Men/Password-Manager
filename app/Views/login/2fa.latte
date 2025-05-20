@@ -1,0 +1,27 @@
+{layout ../layouts/main.latte}
+
+{block content}
+    <section class="container mt-5" style="max-width:400px">
+        <h2 class="mb-4 text-center">Code de sécurité</h2>
+        {if !empty($form->getErrors())}
+            <div class="alert alert-danger">
+                {foreach $form->getErrors() as $field => $msgs}
+                    {foreach $msgs as $err}<p>{$err|escape}</p>{/foreach}
+                {/foreach}
+            </div>
+        {/if}
+        <form method="post" action="{$basePath}/login/2fa">
+
+            <div class="mb-3">
+                <label for="code" class="form-label">Code reçu par e-mail</label>
+                <input type="text" id="code" name="code"
+                       class="form-control {if isset($form->getErrors()['code'])}is-invalid{/if}"
+                       value="{$form->getValue('code')|escape}" required autofocus>
+                {if isset($form->getErrors()['code'])}
+                    <div class="invalid-feedback">{$form->getErrors()['code'][0]|escape}</div>
+                {/if}
+            </div>
+            <button type="submit" class="button-retro w-100">Valider</button>
+        </form>
+    </section>
+{/block}

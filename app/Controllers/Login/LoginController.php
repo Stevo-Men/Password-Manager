@@ -41,12 +41,12 @@ class LoginController extends Controller
         $errors = $data["errors"];
 
         if ($errors) {
-            return $this->render("login", ['form' => $form]);
+            return $this->render("login", ['form' => $form, 'errors' => $errors]);
         }
 
 
-        return $this->redirect('/dashboard');
-        //return $this->redirect('/login/2fa');
+
+        return $this->redirect('/login/2fa');
 
     }
 

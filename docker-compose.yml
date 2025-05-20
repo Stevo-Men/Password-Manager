@@ -8,11 +8,15 @@ services:
       - "80:80"
       - "443:443"
       - "1080:1080"
-    links:
+    depends_on:
       - database
+      - mailhog
     volumes:
       - ./:/var/www/html
       - ./xdebug:/xdebug.d
+    environment:
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
 
   database:
     build:
@@ -29,3 +33,11 @@ services:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    restart: always
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # HTTP Web UI

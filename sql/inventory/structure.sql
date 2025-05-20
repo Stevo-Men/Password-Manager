@@ -33,6 +33,15 @@ CREATE TABLE credentials (
                                      ON UPDATE CASCADE
 );
 
+CREATE TABLE two_factor_codes (
+                                  id          SERIAL PRIMARY KEY,
+                                  user_id     INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                                  code        VARCHAR(6)  NOT NULL,
+                                  expires_at  TIMESTAMP   NOT NULL,
+                                  used_at     TIMESTAMP   NULL
+);
+
+
 
 CREATE TABLE audit_logs (
                             id           SERIAL PRIMARY KEY,
