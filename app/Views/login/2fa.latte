@@ -1,15 +1,14 @@
 {layout ../layouts/main.latte}
 
 {block content}
+    <h2 class="mb-4 text-center page-title">Code de sécurité</h2>
     <section class="container mt-5" style="max-width:400px">
-        <h2 class="mb-4 text-center">Code de sécurité</h2>
-        {if !empty($form->getErrors())}
-            <div class="alert alert-danger">
-                {foreach $form->getErrors() as $field => $msgs}
-                    {foreach $msgs as $err}<p>{$err|escape}</p>{/foreach}
-                {/foreach}
-            </div>
-        {/if}
+
+        <div class="text-center">
+            <button href="{$basePath}/login/2fa/resend" class="button-retro w-5 h-5 ms-auto d-flex">
+                <i class="fa-solid fa-rotate-left"></i>
+            </button>
+        </div>
         <form method="post" action="{$basePath}/login/2fa">
 
             <div class="mb-3">
@@ -23,5 +22,7 @@
             </div>
             <button type="submit" class="button-retro w-100">Valider</button>
         </form>
+
+
     </section>
 {/block}

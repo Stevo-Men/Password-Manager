@@ -1,3 +1,16 @@
+button, input[type="submit"] {
+    background-color: var(--accent-color);
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+button:hover, input[type="submit"]:hover {
+    background-color: var(--button-hover);
+    cursor: pointer;
+}
+
 
 .button-retro {
     font-family: "Open Sans", sans-serif;

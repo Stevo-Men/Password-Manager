@@ -39,6 +39,7 @@
     color: #fff;
 }
 .dashboard-header .btn-logout:hover {
-    background-color: #f19f98 !important;
-    border-color: #922b21 !important;
+    background-color: #ffc0c0 !important;
+    border-color: #ffdbdb !important;
+    color: #ff0000 !important;
 }

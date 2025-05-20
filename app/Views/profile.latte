@@ -3,11 +3,13 @@
 
 
 {block content}
-    <div class="container outside-container">
-{include ./layouts/components/header.latte}
+    {include ./layouts/components/header.latte}
 
-    <section class="container mt-5" style="max-width: 600px;">
-        <h1 class="mb-4 text-center">Mon profil</h1>
+    <div class="container outside-container">
+        {include "zf-flash"}
+
+    <section class="container p-3 mt-5" style="max-width: 600px;">
+        <h1 class="page-title mb-4 p-3 text-center">MON PROFIL</h1>
 
         {if $user->avatar_path}
             <img
@@ -23,13 +25,22 @@
             >
         {/if}
 
+        <div class="row p-3">
+            <div class="col-6 text-center">
+                <form action="{$basePath}/profile/avatar" method="post" enctype="multipart/form-data">
+                    <input type="file" name="avatar" accept="image/*" required>
+                </form>
+            </div>
+            <div class="col-6 text-center">
+                <button type="submit" class="button-retro ">Téléverser</button>
+            </div>
+        </div>
 
-        <form action="{$basePath}/profile/avatar" method="post" enctype="multipart/form-data">
-            <input type="file" name="avatar" accept="image/*" required>
-            <button type="submit" class="button-retro">Téléverser</button>
-        </form>
+
+
+
         <div class="card shadow-sm text-white">
-            <div class="card-body">
+            <div class="card-body m-3">
                 <dl class="row mb-0">
                     <dt class="col-sm-4">Prénom</dt>
                     <dd class="col-sm-8">{$user->firstname|escape}</dd>
@@ -52,17 +63,25 @@
                     {/if}
                 </dl>
             </div>
-            <div class="card-footer text-end">
-                <button href="{$basePath}/profile/edit" class="button-retro">
+
+        </div>
+        <div class="row pt-3">
+            <div class="col-6">
+                <button href="{$basePath}/profile/edit"
+                   class="button-retro w-100 text-center">
                     Modifier le username
                 </button>
             </div>
-            <div class="card-footer text-end">
-                <button href="{$basePath}/profile/change-password" class="button-retro">
-                    Modifier le mot le passe
+            <div class="col-6">
+                <button href="{$basePath}/profile/change-password"
+                   class="button-retro w-100 text-center">
+                    Modifier le mot de passe
                 </button>
             </div>
         </div>
     </section>
+
+
+
 </div>
 {/block}

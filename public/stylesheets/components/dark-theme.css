@@ -25,22 +25,10 @@ a {
     text-decoration: none;
 }
 a:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
 
-/* Boutons */
-button, input[type="submit"] {
-    background-color: var(--accent-color);
-    color: #000;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-}
-button:hover, input[type="submit"]:hover {
-    background-color: var(--button-hover);
-    cursor: pointer;
-}
+
 
 /* Formulaires */
 input[type="text"],
@@ -90,7 +78,7 @@ h2 {
     object-fit: cover;
     margin: 0 auto 1rem;
     border-radius: 50%;
-    border: 3px solid #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.51);
     box-shadow: 0 0 0 2px #111920;
 }
 
@@ -140,6 +128,38 @@ h2 {
 
 .form-text {
     color: var(--text-color);
+}
+
+/* Assurez-vous que votre table prend 100 % de la largeur du container */
+.table-credentials {
+    width: 100%;
+    background-color: var(--bg-color) !important;
+    font-size: 1.2rem !important;
+}
+
+/* Aligner verticalement le contenu des cellules */
+.table-credentials th,
+.table-credentials td {
+    vertical-align: middle;
+}
+
+/* Ajuster l’espacement du titre */
+.page-title {
+    font-size: 1.75rem;
+    font-weight: 300;
+}
+
+/* Option pour bouton-retro plus compact en table */
+.table-credentials .button-retro {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.page-title {
+    letter-spacing: 0.4rem;
+    font-weight: 800;
+    font-family: 'Space Grotesk', sans-serif;
+
 }
 
 @media (max-width: 767px) {
