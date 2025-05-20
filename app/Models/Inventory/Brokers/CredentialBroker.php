@@ -3,6 +3,7 @@
 namespace Models\Inventory\Brokers;
 
 use Models\Inventory\Entities\Credential;
+use Models\Inventory\Entities\User;
 use Zephyrus\Database\DatabaseBroker;
 use stdClass;
 
@@ -27,6 +28,8 @@ class CredentialBroker extends DatabaseBroker
         );
         return $data ? Credential::build($data) : null;
     }
+
+
 
 
     public function insertCredential(Credential $credential): int

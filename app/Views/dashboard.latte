@@ -1,72 +1,62 @@
 {layout layouts/main.latte}
 
 {block content}
-
     {include layouts/components/header.latte}
-    <h1 class="page-title mb-3 mb-md-0">VOS CREDENTIALS</h1>
+
     <div class="container mt-5">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+            <h1 class="page-title mb-3 mb-md-0">VOS CREDENTIALS</h1>
+            <a href="{$basePath}/credentials/create" class="button-retro px-3 py-2">
+                + Ajouter un credential
+            </a>
+        </div>
 
         {include "zf-flash"}
-
-        <div class="d-flex flex-column flex-md-row justify-content-end align-items-md-end mb-4">
-
-            <button type="button"
-               class=" button-retro px-3 py-2"
-            ><a class="text-dark" href="{$basePath}/credentials/create"> + Ajouter un credential</a>
-
-            </button>
-        </div>
 
         {if empty($credentials)}
             <p>Aucun credential trouvé.</p>
         {else}
-            <div class="table-responsive border-light rounded-2 ">
-                <table class="table table-dark table-striped table-credentials rounded border-dark mb-0">
-                    <thead class="pt-2" style="font-size: x-large">
-                    <tr >
-                        <th>Titre</th>
-                        <th>Login</th>
-                        <th>URL</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {foreach $credentials as $c}
-                        <tr>
-                            <td>{$c->title|escape}</td>
-                            <td>{$c->login|escape}</td>
-                            <td>
+            <div class="row g-4">
+                {foreach $credentials as $c}
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card credential-card h-100">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">{$c->title|escape}</h5>
+                                <p class="card-text mb-1">
+                                    <strong>Login :</strong> {$c->login|escape}
+                                </p>
+                                <p class="card-text mb-1 d-flex align-items-center">
+                                    <strong>Mot de passe :</strong>
+                                    <button
+                                            type="button"
+                                            class="btn btn-sm btn-outline-secondary ms-auto toggle-password"
+                                            data-id="{$c->id}"
+                                            aria-label="Afficher le mot de passe"
+                                    >Afficher</button>
+                                    <span class="ms-2 password-mask">••••••••</span>
+                                </p>
                                 {if $c->url}
-                                    <a href="{$c->url|escape}" target="_blank">{$c->url|escape}</a>
+                                    <p class="card-text mb-1">
+                                        <strong>URL :</strong>
+                                        <a href="{$c->url|escape}" target="_blank">{$c->url|escape}</a>
+                                    </p>
                                 {/if}
-                            </td>
-                            <td class="text-center p-3">
-                                <a href="{$basePath}/credentials/{$c->id}/edit"
-                                   class="btn-alert button-retro btn-sm mx-2" style="background-color: snow"
-                                   title="Modifier"
-                                >
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
-                                <form action="{$basePath}/credentials/{$c->id}/delete"
-                                      method="post"
-                                      class="d-inline"
-                                      onsubmit="return confirm('Supprimer « {$c->title|escape} » ?');"
-                                >
-
-                                    <button type="submit"
-                                            class="btn-danger button-retro btn-sm mx-2"
-                                            title="Supprimer"
-                                    >
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    {/foreach}
-                    </tbody>
-                </table>
+                                <div class="mt-auto  d-flex justify-content-between">
+                                    <a href="{$basePath}/credentials/{$c->id}/edit"
+                                       class=" button-retro  m-3 px-3">Modifier</a>
+                                    <form action="{$basePath}/credentials/{$c->id}/delete"
+                                          method="post"
+                                          onsubmit="return confirm('Supprimer « {$c->title|escape} » ?');">
+                                        <button type="submit" class=" button-retro btn-sm m-3 px-3">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {/foreach}
             </div>
         {/if}
     </div>
-
 {/block}

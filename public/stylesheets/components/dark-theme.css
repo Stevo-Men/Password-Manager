@@ -161,6 +161,34 @@ h2 {
 
 }
 
+.credential-card {
+    background-color: #17234c;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    padding: 1rem;
+}
+
+.credential-card .card-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.credential-card .password-mask {
+    font-family: monospace;
+}
+
+.toggle-password {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+
+.toggle-password:focus { outline: none; }
+
+
 
 @media (max-width: 767px) {
     .registration-logo {

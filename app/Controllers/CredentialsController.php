@@ -2,11 +2,10 @@
 
 namespace Controllers;
 
-use Models\Inventory\Brokers\CredentialBroker;
-use Models\Inventory\Entities\Credential;
-use Models\Inventory\Services\CredentialService;
 
-use Zephyrus\Application\Rule;
+use Models\Inventory\Brokers\CredentialBroker;
+use Models\Inventory\Services\CredentialService;
+use Models\Inventory\Services\Cryptography\CryptographyService;
 use Zephyrus\Core\Session;
 use Zephyrus\Network\Router\Get;
 use Zephyrus\Network\Router\Post;
@@ -50,7 +49,8 @@ class CredentialsController extends Controller
         }
 
         $form = $this->buildForm();
-        $this->service->createCredential($userId, $form);
+        $userKey = CryptographyService::getAesKey();
+        $this->service->createCredential($userId, $form, $userKey);
 
         if (!$form->verify()) {
             return $this->render("credentials/form", [
@@ -101,7 +101,8 @@ class CredentialsController extends Controller
         $form = $this->buildForm();
 
         $credential = $this->broker->findById($id);
-        $this->service->updateCredential($form, $credential);
+        $userKey = CryptographyService::getAesKey();
+        $this->service->updateCredential($form, $credential, $userKey);
 
 
         if (!$form->verify()) {
@@ -134,6 +135,28 @@ class CredentialsController extends Controller
             Flash::error("Erreur lors de la suppression.");
         }
         return $this->redirect('/dashboard');
+    }
+
+    #[Get("/credentials/{id}/reveal")]
+    public function reveal(int $id): Response
+    {
+        $userId = Session::get('userId') ?? null;
+        if (!$userId) {
+            return $this->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $credential = $this->broker->findById($id);
+        if (!$credential || $credential->user_id != $userId) {
+            return $this->json(['error' => 'Forbidden'], 403);
+        }
+
+       $userKey = CryptographyService::getAesKey();
+        $plaintext = CryptographyService::decrypt(
+            $credential->password_encrypted,
+            $userKey
+        );
+
+        return $this->json(['password' => $plaintext], 200);
     }
 
 

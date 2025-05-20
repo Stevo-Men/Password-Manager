@@ -4,6 +4,7 @@ namespace Models\Inventory\Services;
 
 use Models\Inventory\Brokers\CredentialBroker;
 use Models\Inventory\Entities\Credential;
+use Models\Inventory\Services\Cryptography\CryptographyService;
 use Models\Inventory\Validators\CredentialValidator;
 use Zephyrus\Application\Flash;
 
@@ -12,13 +13,15 @@ class CredentialService
 {
     private CredentialValidator $validator;
     private CredentialBroker $broker;
+    private CryptographyService $cryptoService;
     public function __construct()
     {
         $this->broker = new CredentialBroker();
         $this->validator = new CredentialValidator();
+        $this->cryptoService = new CryptographyService();
     }
 
-    public function createCredential(int $userId, $form): array {
+    public function createCredential(int $userId, $form, $userKey): array {
 
         try {
             $this->validator->assert($form);
@@ -29,7 +32,7 @@ class CredentialService
             $credential->title              = $data->title;
             $credential->url                = $data->url;
             $credential->login              = $data->login;
-            $credential->password_encrypted  = $data->password;
+            $credential->password_encrypted  = $this->cryptoService->encrypt($data->password,$userKey);
             $credential->notes              = $data->notes;
 
 
@@ -47,7 +50,7 @@ class CredentialService
 
     }
 
-    public function updateCredential($form, $credential): array {
+    public function updateCredential($form, $credential, $userKey): array {
 
         try {
             $this->validator->assert($form);
@@ -56,7 +59,7 @@ class CredentialService
             $credential->title              = $data->title;
             $credential->url                = $data->url;
             $credential->login              = $data->login;
-            $credential->password_encrypted  = $data->password;
+            $credential->password_encrypted  = $this->cryptoService->encrypt($data->password,$userKey);
             $credential->notes              = $data->notes;
 
 
