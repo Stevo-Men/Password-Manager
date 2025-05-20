@@ -26,7 +26,10 @@ class ProfileController extends Controller
     public function index(): Response
     {
         $userId = Session::get('userId') ?? null;
-        $this->requireLogin($userId,'/login');
+        if (!$userId) {
+            return $this->redirect('/login');
+        }
+
 
         $user = $this->service->getProfile($userId);
 
@@ -42,7 +45,9 @@ class ProfileController extends Controller
     public function edit(): Response
     {
         $userId = Session::get('userId') ?? null;
-        $this->requireLogin($userId,'/login');
+        if (!$userId) {
+            return $this->redirect('/login');
+        }
 
         $form = $this->buildForm();
         $user = $this->service->getProfile($userId);
@@ -58,7 +63,9 @@ class ProfileController extends Controller
     public function update(): Response
     {
         $userId = Session::get('userId') ?? null;
-        $this->requireLogin($userId,'/login');
+        if (!$userId) {
+            return $this->redirect('/login');
+        }
 
         $form = $this->buildForm();
 

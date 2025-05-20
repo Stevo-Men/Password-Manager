@@ -29,7 +29,7 @@ class UsersController extends Controller
         }
         $data = $form->buildObject();
         $data->password_hash = password_hash($_POST['password'], PASSWORD_BCRYPT);
-        $this->broker->insert($data);
+       // $this->broker->insert($data);
         return $this->redirect("/users");
     }
 
@@ -51,7 +51,7 @@ class UsersController extends Controller
             'username' => $_POST['username'],
             'email'    => $_POST['email']
         ];
-        $this->broker->update($data);
+       // $this->broker->update($data);
         return $this->redirect("/users");
     }
 

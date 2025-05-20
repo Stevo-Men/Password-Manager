@@ -4,30 +4,34 @@ namespace Models\Inventory\Services;
 
 use Cassandra\Uuid;
 use Models\Inventory\Brokers\TwoFaBroker;
+use Models\Inventory\Brokers\UserBroker;
 use Models\Inventory\Validators\TwoFaValidator;
 use Nette\Mail\Message;
 use Nette\Mail\SmtpMailer;
+use Zephyrus\Application\Flash;
 use Zephyrus\Application\Form;
 
 class TwoFaService
 {
     private TwoFaBroker $broker;
-    private SmtpMailer   $mailer;
+    private SmtpMailer $mailer;
     private TwoFaValidator $validator;
+    private UserBroker $userBroker;
 
     public function __construct()
     {
         $this->validator = new TwoFaValidator();
         $this->broker = new TwoFaBroker();
+        $this->userBroker = new UserBroker();
 
         $host = getenv('SMTP_HOST') ?: 'localhost';
         $port = (int)(getenv('SMTP_PORT') ?: 1025);
 
         $this->mailer = new SmtpMailer(
-            host:       'localhost',
-            username:   '',
-            password:   '',
-            port:       (int)(getenv('SMTP_PORT') ?: 1025),
+            host: 'localhost',
+            username: '',
+            password: '',
+            port: (int)(getenv('SMTP_PORT') ?: 1025),
             encryption: null
         );
     }
@@ -58,6 +62,20 @@ class TwoFaService
             return false;
         }
         $this->broker->markUsed($row->id);
+        return true;
+    }
+
+    public function resendCode(int $userId): bool
+    {
+
+
+        $user = $this->userBroker->findById($userId);
+        if (!$user) {
+            Flash::error("Utilisateur introuvable.");
+            return false;
+        }
+
+        $this->generateAndSendCode($userId, $user->email);
         return true;
     }
 

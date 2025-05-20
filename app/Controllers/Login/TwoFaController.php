@@ -35,6 +35,9 @@ class TwoFaController extends Controller
     {
         $form = $this->buildForm();
         $userId = Session::get('userId') ?? null;
+        if (!$userId) {
+            return $this->redirect('/login');
+        }
 
 
         if ($this->twoFaService->verifyCode($userId,$form)) {
@@ -51,6 +54,22 @@ class TwoFaController extends Controller
         return $this->render('login/2fa',['form'=>$form]);
     }
 
+    #[Get("/login/2fa/resend")]
+    public function resend(): Response
+    {
+        $userId = Session::get('userId') ?? null;
+        if (!$userId) {
+            return $this->redirect('/login');
+        }
 
+        $this->twoFaService->resendCode($userId);
+        if ($this->twoFaService->resendCode($userId)) {
+            return $this->redirect('/login');
+        }
+
+
+        Flash::success("Un nouveau code vous a été envoyé par e-mail.");
+        return $this->redirect('/login/2fa');
+    }
 
 }

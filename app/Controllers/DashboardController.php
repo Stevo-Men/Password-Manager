@@ -21,7 +21,9 @@ class DashboardController extends Controller
     public function index(): Response
     {
         $userId = Session::get('userId') ?? null;
-        $this->requireLogin($userId,'/login');
+        if (!$userId) {
+            return $this->redirect('/login');
+        }
 
         $credentials = $this->broker->findByUser($userId);
 

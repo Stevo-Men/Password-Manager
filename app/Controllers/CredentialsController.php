@@ -29,7 +29,9 @@ class CredentialsController extends Controller
     public function create(): Response
     {
         $userId = Session::get('userId') ?? null;
-        $this->requireLogin($userId,'/login');
+        if (!$userId) {
+            return $this->redirect('/login');
+        }
 
         $form = $this->buildForm();
         return $this->render("credentials/form", [
@@ -43,7 +45,9 @@ class CredentialsController extends Controller
     public function store(): Response
     {
         $userId = Session::get('userId') ?? null;
-        $this->requireLogin($userId, '/login');
+        if (!$userId) {
+            return $this->redirect('/login');
+        }
 
         $form = $this->buildForm();
         $this->service->createCredential($userId, $form);
@@ -67,7 +71,9 @@ class CredentialsController extends Controller
     public function edit(int $id): Response
     {
         $userId = Session::get('userId') ?? null;
-        $this->requireLogin($userId,'/login');
+        if (!$userId) {
+            return $this->redirect('/login');
+        }
 
         $credential = $this->broker->findById($id);
         if (!$credential || $credential->user_id != $userId) {
@@ -88,7 +94,9 @@ class CredentialsController extends Controller
     public function update(int $id): Response
     {
         $userId = Session::get('userId') ?? null;
-        $this->requireLogin($userId,'/login');
+        if (!$userId) {
+            return $this->redirect('/login');
+        }
 
         $form = $this->buildForm();
 
@@ -115,6 +123,10 @@ class CredentialsController extends Controller
     #[Post("/credentials/{id}/delete")]
     public function delete(int $id): Response
     {
+        $userId = Session::get('userId') ?? null;
+        if (!$userId) {
+            return $this->redirect('/login');
+        }
         //TO-DO ajouté confirmation
         if ($this->broker->delete($id)) {
             Flash::success("Credential supprimé avec succès.");

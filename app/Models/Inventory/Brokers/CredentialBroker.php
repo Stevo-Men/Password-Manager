@@ -20,16 +20,7 @@ class CredentialBroker extends DatabaseBroker
     public function findById(int $id): ?Credential
     {
         $data = $this->selectSingle(
-            "SELECT
-                id,
-                user_id,
-                title,
-                url,
-                login,
-                password_encrypted,
-                notes,
-                created_at,
-                updated_at
+            "SELECT id, user_id, title, url, login, password_encrypted, notes, created_at, updated_at
              FROM credentials
              WHERE id = ?",
             [$id]
