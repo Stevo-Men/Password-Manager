@@ -23,11 +23,9 @@ class TwoFaController extends Controller
     #[Get("/login/2fa")]
     public function twoFaForm(): Response
     {
-//        if (empty($_SESSION['pending_2fa_user'])) {
-//            return $this->redirect('/login');
-//        }
+
         $form = $this->buildForm();
-        return $this->render('login/2fa', ['form'=>$form]);
+        return $this->render('login/2fa', ['form' => $form, 'title' => 'Vérification']);
     }
 
     #[Post("/login/2fa")]

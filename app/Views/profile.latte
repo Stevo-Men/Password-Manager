@@ -25,15 +25,16 @@
             >
         {/if}
 
-        <div class="row p-3">
-            <div class="col-6 text-center">
-                <form action="{$basePath}/profile/avatar" method="post" enctype="multipart/form-data">
-                    <input type="file" name="avatar" accept="image/*" required>
-                </form>
-            </div>
-            <div class="col-6 text-center">
-                <button type="submit" class="button-retro ">Téléverser</button>
-            </div>
+        <div class="row text-center p-3">
+            <form action="{$basePath}/profile/avatar" method="post" enctype="multipart/form-data">
+
+
+                <input type="file" name="avatar" accept="image/*" required class="form-control mb-3">
+
+                <button type="submit" class="button-retro link-retro">
+                    Téléverser
+                </button>
+            </form>
         </div>
 
 
@@ -65,18 +66,18 @@
             </div>
 
         </div>
-        <div class="row pt-3">
+        <div class="row pt-3 mt-2">
             <div class="col-6">
-                <button href="{$basePath}/profile/edit"
-                   class="button-retro w-100 text-center">
-                    Modifier le username
-                </button>
+                <a href="{$basePath}/profile/edit"
+                   class="button-retro link-retro text-center">
+                    Modifier l'identifiant
+                </a>
             </div>
             <div class="col-6">
-                <button href="{$basePath}/profile/change-password"
-                   class="button-retro w-100 text-center">
-                    Modifier le mot de passe
-                </button>
+                <a href="{$basePath}/profile/change-password"
+                   class="button-retro link-retro  text-center">
+                    Modifier mot de passe
+                </a>
             </div>
         </div>
     </section>

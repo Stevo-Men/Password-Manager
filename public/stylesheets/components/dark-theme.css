@@ -132,24 +132,23 @@ h2 {
 
 /* Assurez-vous que votre table prend 100 % de la largeur du container */
 .table-credentials {
-    width: 100%;
+
     background-color: var(--bg-color) !important;
     font-size: 1.2rem !important;
 }
 
-/* Aligner verticalement le contenu des cellules */
+
 .table-credentials th,
 .table-credentials td {
     vertical-align: middle;
 }
 
-/* Ajuster l’espacement du titre */
+
 .page-title {
     font-size: 1.75rem;
     font-weight: 300;
 }
 
-/* Option pour bouton-retro plus compact en table */
 .table-credentials .button-retro {
     padding: 0.25rem 0.5rem;
     font-size: 0.875rem;
@@ -161,6 +160,7 @@ h2 {
     font-family: 'Space Grotesk', sans-serif;
 
 }
+
 
 @media (max-width: 767px) {
     .registration-logo {

@@ -20,7 +20,7 @@ class RegisterController extends Controller
     public function showForm(): Response
     {
         $form = $this->buildForm();
-        return $this->render("register", ['form' => $form]);
+        return $this->render("register", ['form' => $form, 'title' => 'S\'inscrire']);
     }
 
     #[Post("/register")]
